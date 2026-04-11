@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 30% 96%;
+    --foreground: 30 10% 12%;
+    --card: 40 ondary-foreground: 30 10% 12%;
+    --muted: 40 20% 90%;
+    --muted-foreground: 30 8% 45%;
+    --accent: 100 15% 60%;
+    --accent-foreground: 30 10% 12%;
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 40 30% 96%;
+    --border: 35 20% 82%;
+    --input: 35 20% 82%;
+    --ring: 30 10% 12%;
+   --sidebar-foreground: 30 10% 12%;
+    --sidebar-primary: 30 10% 12%;
+    --sidebar-primary-foreground: 40 30% 96%;
+    --sidebar-accent: 40 20% 88%;
+    --sidebar-accent-foreground: 30 10% 12%;
+    --sidebar-border: 35 20% 82%;
+    --sidebar-ring: 30 10% 12%;
+  }
+
+  .dark {
+    --background: 30 foreground: 30 10% 8%;
+    --secondary: 30 8% 15%;
+    --secondary-foreground: 40 20% 90%;
+    --muted: 30 8% 15%;
+    --muted-foreground: 35 8% 55%;
+    --accent: 100 15% 40%;
+    --accent-foreground: 40 20% 90%;
+    --destructive: 0 60% 40%;
+    --destructive-foreground: 40 20% 90%;
+    --borderd: 30 10% 8%;
+    --sidebar-accent: 30 8% 12%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 30 8% 15%;
+    --sidebar-ring: 40 20% 90%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+}
