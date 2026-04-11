@@ -1,0 +1,60 @@
+{
+  "name": "Reading",
+  "type": "object",
+  "properties": {
+    "hexagram_number": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "hexagram_name": {
+      "type": "string"
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "description": "Six line values (6,7,8,9) bottom to top"
+    },
+    "changing_lines": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "relating_hexagram": {
+      "type": "integer"
+    },
+    "question": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "coin"
+      ]
+    },
+    "mood_tag": {
+      "type": "string",
+      "enum": [
+        "clarity",
+        "uncertainty",
+        "transition",
+        "stillness",
+        "growth",
+        "release"
+      ]
+    }
+  },
+  "required": [
+    "hexagram_number",
+    "hexagram_name",
+    "method",
+    "lines"
+  ]
+}
