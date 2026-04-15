@@ -7,7 +7,14 @@
   :root {
     --background: 40 30% 96%;
     --foreground: 30 10% 12%;
-    --card: 40 ondary-foreground: 30 10% 12%;
+    --card: 40 30% 94%;
+    --card-foreground: 30 10% 12%;
+    --popover: 40 30% 96%;
+    --popover-foreground: 30 10% 12%;
+    --primary: 30 10% 12%;
+    --primary-foreground: 40 30% 96%;
+    --secondary: 40 20% 92%;
+    --secondary-foreground: 30 10% 12%;
     --muted: 40 20% 90%;
     --muted-foreground: 30 8% 45%;
     --accent: 100 15% 60%;
@@ -17,7 +24,14 @@
     --border: 35 20% 82%;
     --input: 35 20% 82%;
     --ring: 30 10% 12%;
-   --sidebar-foreground: 30 10% 12%;
+    --radius: 0.5rem;
+    --chart-1: 30 60% 50%;
+    --chart-2: 100 40% 45%;
+    --chart-3: 40 50% 55%;
+    --chart-4: 200 40% 50%;
+    --chart-5: 0 50% 55%;
+    --sidebar-background: 40 30% 96%;
+    --sidebar-foreground: 30 10% 12%;
     --sidebar-primary: 30 10% 12%;
     --sidebar-primary-foreground: 40 30% 96%;
     --sidebar-accent: 40 20% 88%;
@@ -27,7 +41,14 @@
   }
 
   .dark {
-    --background: 30 foreground: 30 10% 8%;
+    --background: 30 10% 6%;
+    --foreground: 40 20% 90%;
+    --card: 30 10% 8%;
+    --card-foreground: 40 20% 90%;
+    --popover: 30 10% 6%;
+    --popover-foreground: 40 20% 90%;
+    --primary: 40 20% 90%;
+    --primary-foreground: 30 10% 6%;
     --secondary: 30 8% 15%;
     --secondary-foreground: 40 20% 90%;
     --muted: 30 8% 15%;
@@ -36,7 +57,18 @@
     --accent-foreground: 40 20% 90%;
     --destructive: 0 60% 40%;
     --destructive-foreground: 40 20% 90%;
-    --borderd: 30 10% 8%;
+    --border: 30 8% 18%;
+    --input: 30 8% 18%;
+    --ring: 40 20% 90%;
+    --chart-1: 30 60% 55%;
+    --chart-2: 100 40% 50%;
+    --chart-3: 40 50% 60%;
+    --chart-4: 200 40% 55%;
+    --chart-5: 0 50% 60%;
+    --sidebar-background: 30 10% 8%;
+    --sidebar-foreground: 40 20% 90%;
+    --sidebar-primary: 40 20% 90%;
+    --sidebar-primary-foreground: 30 10% 8%;
     --sidebar-accent: 30 8% 12%;
     --sidebar-accent-foreground: 40 20% 90%;
     --sidebar-border: 30 8% 15%;
