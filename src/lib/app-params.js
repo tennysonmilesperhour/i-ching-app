@@ -48,42 +48,6 @@ const getAppParams = () => {
 	}
 }
 
-// Session keepalive: refresh token before it expires and recover on visibility change
-const SESSION_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 minutes
-
-function startSessionKeepalive() {
-	if (isNode) return;
-
-	// Periodically check and refresh the token
-	setInterval(() => {
-		const token = storage.getItem('base44_access_token');
-		if (token) {
-			// Touch the stored timestamp to keep the session alive
-			storage.setItem('base44_session_last_active', Date.now().toString());
-		}
-	}, SESSION_REFRESH_INTERVAL);
-
-	// Re-validate session when the tab regains focus after being hidden
-	document.addEventListener('visibilitychange', () => {
-		if (document.visibilityState === 'visible') {
-			const lastActive = storage.getItem('base44_session_last_active');
-			const now = Date.now();
-			const elapsed = lastActive ? now - parseInt(lastActive, 10) : Infinity;
-
-			// If the tab was inactive for more than 30 minutes, reload to re-auth
-			if (elapsed > 30 * 60 * 1000) {
-				const token = storage.getItem('base44_access_token');
-				if (!token) {
-					window.location.reload();
-					return;
-				}
-			}
-			storage.setItem('base44_session_last_active', now.toString());
-		}
-	});
-}
-
-startSessionKeepalive();
 
 export const appParams = {
 	...getAppParams()

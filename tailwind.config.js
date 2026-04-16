@@ -8,18 +8,16 @@ module.exports = {
         serif: ['Cormorant Garamond', 'Georgia', 'serif'],
         display: ['IM Fell English', 'Georgia', 'serif'],
       },
-      colors: {
-        parchment: 'hsl(40 30% 96%)',
-        ink: 'hsl(30 10% 12%)',
-        stone: 'hsl(35 12% 70%)',
-        sage: 'hsl(100 15% 55%)',
-      },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+  		  parchment: 'hsl(40 30% 96%)',
+  		  ink: 'hsl(30 10% 12%)',
+  		  stone: 'hsl(35 12% 70%)',
+  		  sage: 'hsl(100 15% 55%)',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
