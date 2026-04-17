@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Sparkles, Coins, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
+import { Sparkles, Coins, ChevronRight, ChevronUp, ChevronDown, Undo2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
 import {
@@ -21,12 +21,6 @@ const LINE_DESCRIPTIONS = {
   9: 'Old Yang (changing)',
 };
 
-function headsDescription(heads) {
-  const tails = 3 - heads;
-  const lineVal = HEADS_TO_LINE[heads];
-  return `${heads} head${heads !== 1 ? 's' : ''} · ${tails} tail${tails !== 1 ? 's' : ''} → ${LINE_DESCRIPTIONS[lineVal]} …`;
-}
-
 export default function Oracle() {
   const navigate = useNavigate();
   const [question, setQuestion] = useState('');
@@ -35,7 +29,6 @@ export default function Oracle() {
   const [saving, setSaving] = useState(false);
   const [coinStep, setCoinStep] = useState(null);
   const [coinLines, setCoinLines] = useState([]);
-  const [selectedHeads, setSelectedHeads] = useState(null);
   const [showInstructions, setShowInstructions] = useState(true);
 
   const cast = () => {
@@ -57,18 +50,23 @@ export default function Oracle() {
     });
   };
 
-  const confirmCoinLine = () => {
-    if (selectedHeads === null) return;
-    const lineVal = HEADS_TO_LINE[selectedHeads];
+  const selectHeads = (heads) => {
+    const lineVal = HEADS_TO_LINE[heads];
     const newLines = [...coinLines, lineVal];
     setCoinLines(newLines);
-    setSelectedHeads(null);
     if (newLines.length === 6) {
       setCoinStep(null);
       finishCast(newLines);
     } else {
       setCoinStep(newLines.length);
     }
+  };
+
+  const undoLastLine = () => {
+    if (coinLines.length === 0) return;
+    const newLines = coinLines.slice(0, -1);
+    setCoinLines(newLines);
+    setCoinStep(newLines.length);
   };
 
   const save = async () => {
@@ -102,7 +100,6 @@ export default function Oracle() {
     setMethod(null);
     setCoinStep(null);
     setCoinLines([]);
-    setSelectedHeads(null);
   };
 
   const isCoinFlow = coinStep !== null && !reading;
@@ -172,9 +169,21 @@ export default function Oracle() {
 
           {/* Current line input */}
           <div className="space-y-4">
-            <p className="text-xs tracking-widest uppercase text-ink/50">
-              Line {coinStep + 1} — {LINE_LABELS[coinStep]}
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-xs tracking-widest uppercase text-ink/50">
+                Line {coinStep + 1} — {LINE_LABELS[coinStep]}
+              </p>
+              {coinLines.length > 0 && (
+                <button
+                  onClick={undoLastLine}
+                  className="flex items-center gap-1 text-xs text-ink/35 hover:text-ink/60 transition-colors"
+                  title="Undo last line"
+                >
+                  <Undo2 className="w-3 h-3" strokeWidth={1.5} />
+                  <span>Undo</span>
+                </button>
+              )}
+            </div>
             <p className="text-lg font-serif text-ink/80">
               Toss three coins. How many landed heads?
             </p>
@@ -182,31 +191,13 @@ export default function Oracle() {
               {[0, 1, 2, 3].map((h) => (
                 <button
                   key={h}
-                  onClick={() => setSelectedHeads(h)}
-                  className={`py-4 rounded border text-center font-serif text-lg transition-colors ${
-                    selectedHeads === h
-                      ? 'border-ink/60 bg-ink/5 text-ink'
-                      : 'border-stone/30 text-ink/50 hover:border-ink/40 hover:text-ink/70'
-                  }`}
+                  onClick={() => selectHeads(h)}
+                  className="py-4 rounded border text-center font-serif text-lg transition-colors border-stone/30 text-ink/50 hover:border-ink/40 hover:text-ink/70 active:bg-ink/5"
                 >
                   {h}
                 </button>
               ))}
             </div>
-
-            {selectedHeads !== null && (
-              <div className="space-y-3">
-                <p className="text-sm text-ink/50 px-1">
-                  {headsDescription(selectedHeads)}
-                </p>
-                <button
-                  onClick={confirmCoinLine}
-                  className="w-full py-3 bg-ink text-parchment rounded text-sm tracking-wide hover:bg-ink/85 transition-colors"
-                >
-                  Cast Line {coinStep + 1} →
-                </button>
-              </div>
-            )}
           </div>
         </div>
       ) : !reading ? (
