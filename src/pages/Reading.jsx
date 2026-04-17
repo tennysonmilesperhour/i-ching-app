@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
 import { HEXAGRAM_NAMES, getTrigrams } from '@/lib/hexagramData';
@@ -7,10 +9,32 @@ import { HEXAGRAM_INTERPRETATIONS } from '@/lib/hexagramInterpretations';
 
 export default function Reading() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
+  const [notes, setNotes] = useState('');
+  const [notesDirty, setNotesDirty] = useState(false);
 
   const { data: reading, isLoading, error } = useQuery({
     queryKey: ['reading', id],
     queryFn: () => base44.entities.Reading.get(id),
+  });
+
+  useEffect(() => {
+    if (reading && !notesDirty) {
+      setNotes(reading.notes || '');
+    }
+  }, [reading, notesDirty]);
+
+  const saveNotes = useMutation({
+    mutationFn: (value) => base44.entities.Reading.update(id, { notes: value }),
+    onSuccess: () => {
+      toast.success('Reflection saved');
+      setNotesDirty(false);
+      queryClient.invalidateQueries({ queryKey: ['reading', id] });
+      queryClient.invalidateQueries({ queryKey: ['readings'] });
+    },
+    onError: () => {
+      toast.error('Could not save reflection');
+    },
   });
 
   if (isLoading) {
@@ -99,27 +123,47 @@ export default function Reading() {
         )}
 
         {interpretation && (
-          <div className="border-t border-stone/20 pt-8 space-y-4">
-            <span className="text-xs tracking-widest uppercase text-ink/30">The Judgment</span>
-            <p className="font-serif text-lg leading-relaxed text-ink/80">
-              {interpretation.judgment}
-            </p>
+          <div className="border-t border-stone/20 pt-8 space-y-10">
+            {interpretation.judgment && (
+              <div className="space-y-4">
+                <h2 className="text-xs tracking-widest uppercase text-ink/30">The Judgment</h2>
+                <p className="font-serif text-lg leading-[1.85] text-ink/85">
+                  {interpretation.judgment}
+                </p>
+              </div>
+            )}
             {interpretation.image && (
-              <p className="text-sm italic text-ink/50 leading-relaxed">
-                {interpretation.image}
-              </p>
+              <div className="space-y-4">
+                <h2 className="text-xs tracking-widest uppercase text-ink/30">The Image</h2>
+                <p className="font-serif text-lg italic leading-[1.85] text-ink/70">
+                  {interpretation.image}
+                </p>
+              </div>
+            )}
+            {interpretation.counsel && (
+              <div className="space-y-4">
+                <h2 className="text-xs tracking-widest uppercase text-ink/30">Counsel</h2>
+                <p className="font-serif text-lg leading-[1.85] text-ink/85">
+                  {interpretation.counsel}
+                </p>
+              </div>
             )}
           </div>
         )}
 
         {relatingInterpretation && (
-          <div className="border-t border-stone/20 pt-8 space-y-4">
-            <span className="text-xs tracking-widest uppercase text-ink/30">
+          <div className="border-t border-stone/20 pt-8 space-y-6">
+            <h2 className="text-xs tracking-widest uppercase text-ink/30">
               Changing toward {reading.relating_hexagram}. {relatingName}
-            </span>
-            <p className="font-serif text-base leading-relaxed text-ink/70">
+            </h2>
+            <p className="font-serif text-base leading-[1.85] text-ink/70">
               {relatingInterpretation.judgment}
             </p>
+            {relatingInterpretation.counsel && (
+              <p className="font-serif text-base leading-[1.85] text-ink/70">
+                {relatingInterpretation.counsel}
+              </p>
+            )}
           </div>
         )}
 
@@ -146,12 +190,38 @@ export default function Reading() {
           )}
         </div>
 
-        {reading.notes && (
-          <div className="border-t border-stone/20 pt-8">
-            <span className="text-xs tracking-widest uppercase text-ink/30">Notes</span>
-            <p className="text-ink/60 mt-2 whitespace-pre-wrap">{reading.notes}</p>
+        <div className="border-t border-stone/20 pt-8 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xs tracking-widest uppercase text-ink/30">Your Reflection</h2>
+            {notesDirty && (
+              <span className="text-[10px] tracking-widest uppercase text-sage/70">
+                Unsaved
+              </span>
+            )}
           </div>
-        )}
+          <p className="text-sm text-ink/40 italic leading-relaxed">
+            Sit with the reading. What does it stir in you? Where in your life does this speak?
+          </p>
+          <textarea
+            value={notes}
+            onChange={(e) => {
+              setNotes(e.target.value);
+              setNotesDirty(true);
+            }}
+            placeholder="Write what arises…"
+            rows={8}
+            className="w-full bg-transparent border border-stone/30 rounded px-4 py-3 text-ink placeholder:text-ink/25 focus:outline-none focus:border-ink/40 resize-y font-serif text-base leading-relaxed"
+          />
+          <div className="flex justify-end">
+            <button
+              onClick={() => saveNotes.mutate(notes)}
+              disabled={!notesDirty || saveNotes.isPending}
+              className="px-5 py-2 bg-ink text-parchment rounded text-sm tracking-wide hover:bg-ink/85 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {saveNotes.isPending ? 'Saving…' : 'Save Reflection'}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
