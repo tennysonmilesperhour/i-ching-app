@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Sparkles, Coins, ChevronRight } from 'lucide-react';
+import { Sparkles, Coins, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
 import {
@@ -12,21 +12,41 @@ import {
   HEXAGRAM_NAMES,
 } from '@/lib/hexagramData';
 
+const LINE_LABELS = ['Bottom', '2', '3', '4', '5', 'Top'];
+const HEADS_TO_LINE = { 0: 6, 1: 7, 2: 8, 3: 9 };
+const LINE_DESCRIPTIONS = {
+  6: 'Old Yin (changing)',
+  7: 'Young Yang',
+  8: 'Young Yin',
+  9: 'Old Yang (changing)',
+};
+
+function headsDescription(heads) {
+  const tails = 3 - heads;
+  const lineVal = HEADS_TO_LINE[heads];
+  return `${heads} head${heads !== 1 ? 's' : ''} · ${tails} tail${tails !== 1 ? 's' : ''} → ${LINE_DESCRIPTIONS[lineVal]} …`;
+}
+
 export default function Oracle() {
   const navigate = useNavigate();
   const [question, setQuestion] = useState('');
   const [method, setMethod] = useState(null);
   const [reading, setReading] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [coinStep, setCoinStep] = useState(null); // null=not started, 0-5=line index
-  const [coinLines, setCoinLines] = useState([]); // accumulated line values
+  const [coinStep, setCoinStep] = useState(null);
+  const [coinLines, setCoinLines] = useState([]);
+  const [selectedHeads, setSelectedHeads] = useState(null);
+  const [showInstructions, setShowInstructions] = useState(true);
 
   const cast = () => {
     const lines = castReading();
+    finishCast(lines);
+  };
+
+  const finishCast = (lines) => {
     const hexNum = hexagramFromLines(lines);
     const relating = getRelatingHexagram(lines);
     const changingLines = getChangingLineIndices(lines);
-
     setReading({
       lines,
       hexagram_number: hexNum,
@@ -35,6 +55,20 @@ export default function Oracle() {
       relating_name: relating ? HEXAGRAM_NAMES[relating] : null,
       changing_lines: changingLines,
     });
+  };
+
+  const confirmCoinLine = () => {
+    if (selectedHeads === null) return;
+    const lineVal = HEADS_TO_LINE[selectedHeads];
+    const newLines = [...coinLines, lineVal];
+    setCoinLines(newLines);
+    setSelectedHeads(null);
+    if (newLines.length === 6) {
+      setCoinStep(null);
+      finishCast(newLines);
+    } else {
+      setCoinStep(newLines.length);
+    }
   };
 
   const save = async () => {
@@ -68,7 +102,10 @@ export default function Oracle() {
     setMethod(null);
     setCoinStep(null);
     setCoinLines([]);
+    setSelectedHeads(null);
   };
+
+  const isCoinFlow = coinStep !== null && !reading;
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-12">
@@ -80,8 +117,100 @@ export default function Oracle() {
         </p>
       </div>
 
-      {!reading ? (
-        /* Pre-cast form */
+      {isCoinFlow ? (
+        /* Three Coin Method — step-by-step input */
+        <div className="space-y-8">
+          {question && (
+            <div>
+              <label className="block text-xs tracking-widest uppercase text-ink/40 mb-2">
+                Your Question <span className="normal-case tracking-normal text-ink/30">(optional)</span>
+              </label>
+              <div className="w-full bg-transparent border border-stone/30 rounded px-4 py-3 text-ink/60 text-sm">
+                {question}
+              </div>
+            </div>
+          )}
+
+          {/* Collapsible instructions */}
+          <div className="border border-stone/30 rounded">
+            <button
+              onClick={() => setShowInstructions(!showInstructions)}
+              className="w-full flex items-center justify-between px-5 py-4 text-left"
+            >
+              <span className="font-serif text-ink/80">How to toss the coins</span>
+              {showInstructions
+                ? <ChevronUp className="w-4 h-4 text-ink/40" />
+                : <ChevronDown className="w-4 h-4 text-ink/40" />
+              }
+            </button>
+            {showInstructions && (
+              <div className="px-5 pb-5 space-y-3 text-sm text-ink/60 leading-relaxed">
+                <p>
+                  Hold three coins of the same kind. Concentrate on your question. When ready, let them
+                  fall. Assign: <strong className="text-ink/80">Heads = 3</strong> (yang) · <strong className="text-ink/80">Tails = 2</strong> (yin).
+                </p>
+                <p>
+                  The sum of three coins gives the line: 6 = Old Yin (changing) · 7 = Young Yang · 8 = Young
+                  Yin · 9 = Old Yang (changing).
+                </p>
+                <p>
+                  Build from the <em>bottom up</em> — the first toss is the bottom line.
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Progress indicator + hexagram visual */}
+          {coinLines.length > 0 && (
+            <div className="flex flex-col items-center gap-3">
+              <p className="text-xs tracking-widest uppercase text-ink/40">
+                Lines cast: {coinLines.length} of 6
+              </p>
+              <HexagramVisual lines={coinLines} size="md" partial />
+            </div>
+          )}
+
+          {/* Current line input */}
+          <div className="space-y-4">
+            <p className="text-xs tracking-widest uppercase text-ink/50">
+              Line {coinStep + 1} — {LINE_LABELS[coinStep]}
+            </p>
+            <p className="text-lg font-serif text-ink/80">
+              Toss three coins. How many landed heads?
+            </p>
+            <div className="grid grid-cols-4 gap-3">
+              {[0, 1, 2, 3].map((h) => (
+                <button
+                  key={h}
+                  onClick={() => setSelectedHeads(h)}
+                  className={`py-4 rounded border text-center font-serif text-lg transition-colors ${
+                    selectedHeads === h
+                      ? 'border-ink/60 bg-ink/5 text-ink'
+                      : 'border-stone/30 text-ink/50 hover:border-ink/40 hover:text-ink/70'
+                  }`}
+                >
+                  {h}
+                </button>
+              ))}
+            </div>
+
+            {selectedHeads !== null && (
+              <div className="space-y-3">
+                <p className="text-sm text-ink/50 px-1">
+                  {headsDescription(selectedHeads)}
+                </p>
+                <button
+                  onClick={confirmCoinLine}
+                  className="w-full py-3 bg-ink text-parchment rounded text-sm tracking-wide hover:bg-ink/85 transition-colors"
+                >
+                  Cast Line {coinStep + 1} →
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : !reading ? (
+        /* Method selection */
         <div className="space-y-8">
           <div>
             <label className="block text-xs tracking-widest uppercase text-ink/40 mb-2">
@@ -135,7 +264,7 @@ export default function Oracle() {
         /* Post-cast result */
         <div className="space-y-10">
           {question && (
-            <p className="text-center text-ink/50 italic text-lg font-serif">"{question}"</p>
+            <p className="text-center text-ink/50 italic text-lg font-serif">&ldquo;{question}&rdquo;</p>
           )}
 
           <div className="flex flex-col items-center gap-6">

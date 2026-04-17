@@ -1,7 +1,8 @@
 import { getLineType } from '../lib/hexagramData';
 
-export default function HexagramVisual({ lines, size = 'md', showChanging = false }) {
-  if (!lines || lines.length !== 6) return null;
+export default function HexagramVisual({ lines, size = 'md', showChanging = false, partial = false }) {
+  if (!lines || lines.length === 0) return null;
+  if (!partial && lines.length !== 6) return null;
 
   const cfg = {
     sm: { w: 72, h: 5, gap: 5, brk: 10 },
@@ -10,15 +11,25 @@ export default function HexagramVisual({ lines, size = 'md', showChanging = fals
   };
 
   const c = cfg[size] || cfg.md;
-  // Display lines top-to-bottom (line 6 at top, line 1 at bottom)
-  const displayLines = [...lines].reverse();
-  const totalH = 6 * c.h + 5 * c.gap;
+  const totalSlots = partial ? 6 : lines.length;
+  const paddedLines = partial
+    ? [...Array(6 - lines.length).fill(null), ...([...lines].reverse())]
+    : [...lines].reverse();
+  const displayLines = paddedLines;
+  const totalH = totalSlots * c.h + (totalSlots - 1) * c.gap;
 
   return (
     <svg width={c.w + (showChanging ? 20 : 0)} height={totalH} viewBox={`0 0 ${c.w + (showChanging ? 20 : 0)} ${totalH}`}>
       {displayLines.map((val, idx) => {
-        const { yin, changing } = getLineType(val);
         const y = idx * (c.h + c.gap);
+        if (val === null) {
+          return (
+            <g key={idx}>
+              <rect x={0} y={y} width={c.w} height={c.h} rx={1} className="fill-ink/10" />
+            </g>
+          );
+        }
+        const { yin, changing } = getLineType(val);
         const half = (c.w - c.brk) / 2;
 
         return (
