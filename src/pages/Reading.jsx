@@ -2,7 +2,8 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
-import { HEXAGRAM_NAMES } from '@/lib/hexagramData';
+import { HEXAGRAM_NAMES, getTrigrams } from '@/lib/hexagramData';
+import { HEXAGRAM_INTERPRETATIONS } from '@/lib/hexagramInterpretations';
 
 export default function Reading() {
   const { id } = useParams();
@@ -34,6 +35,11 @@ export default function Reading() {
   const relatingName = reading.relating_hexagram
     ? HEXAGRAM_NAMES[reading.relating_hexagram]
     : null;
+  const interpretation = HEXAGRAM_INTERPRETATIONS[reading.hexagram_number];
+  const relatingInterpretation = reading.relating_hexagram
+    ? HEXAGRAM_INTERPRETATIONS[reading.relating_hexagram]
+    : null;
+  const trigrams = getTrigrams(reading.lines);
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-12">
@@ -64,6 +70,56 @@ export default function Reading() {
         {reading.changing_lines?.length > 0 && (
           <div className="text-center text-xs text-ink/35 tracking-wide">
             Changing lines: {reading.changing_lines.map((i) => i + 1).join(', ')}
+          </div>
+        )}
+
+        {trigrams && (
+          <div className="grid grid-cols-2 gap-4 border-t border-stone/20 pt-8">
+            <div className="text-center space-y-2">
+              <span className="text-xs tracking-widest uppercase text-ink/30">Upper</span>
+              <div className="text-4xl text-ink/80 leading-none">{trigrams.upper.symbol}</div>
+              <p className="font-serif text-ink/70">
+                {trigrams.upper.element} · {trigrams.upper.chinese}
+              </p>
+              <p className="text-xs text-ink/45 italic leading-relaxed">
+                {trigrams.upper.attribute}
+              </p>
+            </div>
+            <div className="text-center space-y-2">
+              <span className="text-xs tracking-widest uppercase text-ink/30">Lower</span>
+              <div className="text-4xl text-ink/80 leading-none">{trigrams.lower.symbol}</div>
+              <p className="font-serif text-ink/70">
+                {trigrams.lower.element} · {trigrams.lower.chinese}
+              </p>
+              <p className="text-xs text-ink/45 italic leading-relaxed">
+                {trigrams.lower.attribute}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {interpretation && (
+          <div className="border-t border-stone/20 pt-8 space-y-4">
+            <span className="text-xs tracking-widest uppercase text-ink/30">The Judgment</span>
+            <p className="font-serif text-lg leading-relaxed text-ink/80">
+              {interpretation.judgment}
+            </p>
+            {interpretation.image && (
+              <p className="text-sm italic text-ink/50 leading-relaxed">
+                {interpretation.image}
+              </p>
+            )}
+          </div>
+        )}
+
+        {relatingInterpretation && (
+          <div className="border-t border-stone/20 pt-8 space-y-4">
+            <span className="text-xs tracking-widest uppercase text-ink/30">
+              Changing toward {reading.relating_hexagram}. {relatingName}
+            </span>
+            <p className="font-serif text-base leading-relaxed text-ink/70">
+              {relatingInterpretation.judgment}
+            </p>
           </div>
         )}
 

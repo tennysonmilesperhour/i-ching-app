@@ -40,6 +40,27 @@ export function hexagramFromLines(lines) {
   return KING_WEN[lower][upper];
 }
 
+// Trigram metadata keyed by the same index used in KING_WEN
+// 0=Kun 1=Zhen 2=Kan 3=Dui 4=Gen 5=Li 6=Xun 7=Qian
+export const TRIGRAMS = [
+  { name: 'Kun',  chinese: '坤', symbol: '☷', element: 'Earth',    attribute: 'the receptive, yielding' },
+  { name: 'Zhen', chinese: '震', symbol: '☳', element: 'Thunder',  attribute: 'the arousing, movement' },
+  { name: 'Kan',  chinese: '坎', symbol: '☵', element: 'Water',    attribute: 'the abysmal, danger' },
+  { name: 'Dui',  chinese: '兌', symbol: '☱', element: 'Lake',     attribute: 'the joyous, open' },
+  { name: 'Gen',  chinese: '艮', symbol: '☶', element: 'Mountain', attribute: 'keeping still' },
+  { name: 'Li',   chinese: '離', symbol: '☲', element: 'Fire',     attribute: 'the clinging, clarity' },
+  { name: 'Xun',  chinese: '巽', symbol: '☴', element: 'Wind',     attribute: 'the gentle, penetrating' },
+  { name: 'Qian', chinese: '乾', symbol: '☰', element: 'Heaven',   attribute: 'the creative, strong' },
+];
+
+export function getTrigrams(lines) {
+  if (!lines || lines.length !== 6) return null;
+  return {
+    lower: TRIGRAMS[trigramIndex(lines[0], lines[1], lines[2])],
+    upper: TRIGRAMS[trigramIndex(lines[3], lines[4], lines[5])],
+  };
+}
+
 export function getRelatingHexagram(lines) {
   const changed = lines.map((v) => {
     if (v === 6) return 7;
