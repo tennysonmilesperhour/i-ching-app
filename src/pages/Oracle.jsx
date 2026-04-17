@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { Sparkles, Coins, ChevronRight } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
 import {
@@ -11,15 +12,14 @@ import {
   HEXAGRAM_NAMES,
 } from '@/lib/hexagramData';
 
-const MOOD_TAGS = ['clarity', 'uncertainty', 'transition', 'stillness', 'growth', 'release'];
-
 export default function Oracle() {
   const navigate = useNavigate();
   const [question, setQuestion] = useState('');
-  const [method, setMethod] = useState('coin');
-  const [moodTag, setMoodTag] = useState('');
+  const [method, setMethod] = useState(null);
   const [reading, setReading] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [coinStep, setCoinStep] = useState(null); // null=not started, 0-5=line index
+  const [coinLines, setCoinLines] = useState([]); // accumulated line values
 
   const cast = () => {
     const lines = castReading();
@@ -49,7 +49,6 @@ export default function Oracle() {
         relating_hexagram: reading.relating_hexagram,
         question: question || undefined,
         method,
-        mood_tag: moodTag || undefined,
       };
       const created = await base44.entities.Reading.create(record);
       toast.success('Reading saved to your journal');
@@ -66,15 +65,19 @@ export default function Oracle() {
   const reset = () => {
     setReading(null);
     setQuestion('');
-    setMoodTag('');
+    setMethod(null);
+    setCoinStep(null);
+    setCoinLines([]);
   };
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-12">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-3xl font-serif tracking-wide text-ink/90 mb-2">Consult the Oracle</h1>
-        <p className="text-sm text-ink/40 tracking-widest uppercase">The Book of Changes</p>
+        <h1 className="text-3xl font-serif tracking-wide text-ink/90 mb-3">Consult the Dao</h1>
+        <p className="text-sm text-ink/50 italic font-serif max-w-md mx-auto leading-relaxed">
+          Still your mind. Let a question arise. The oracle responds to the quality of your attention.
+        </p>
       </div>
 
       {!reading ? (
@@ -82,64 +85,50 @@ export default function Oracle() {
         <div className="space-y-8">
           <div>
             <label className="block text-xs tracking-widest uppercase text-ink/40 mb-2">
-              Your Question
+              Your Question <span className="normal-case tracking-normal text-ink/30">(optional)</span>
             </label>
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="What would you ask of the oracle?"
+              placeholder="What do I need to understand about..."
               className="w-full bg-transparent border border-stone/30 rounded px-4 py-3 text-ink placeholder:text-ink/25 focus:outline-none focus:border-ink/40 resize-none"
               rows={3}
             />
           </div>
 
           <div>
-            <label className="block text-xs tracking-widest uppercase text-ink/40 mb-3">Method</label>
-            <div className="flex gap-3">
-              {['coin', 'auto'].map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setMethod(m)}
-                  className={`px-4 py-2 rounded border text-sm tracking-wide transition-colors ${
-                    method === m
-                      ? 'border-ink/40 text-ink bg-ink/5'
-                      : 'border-stone/20 text-ink/40 hover:text-ink/60'
-                  }`}
-                >
-                  {m === 'coin' ? 'Three Coins' : 'Automatic'}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs tracking-widest uppercase text-ink/40 mb-3">
-              Mood (optional)
+            <label className="block text-xs tracking-widest uppercase text-ink/40 mb-4">
+              Choose Your Method
             </label>
-            <div className="flex flex-wrap gap-2">
-              {MOOD_TAGS.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => setMoodTag(moodTag === tag ? '' : tag)}
-                  className={`px-3 py-1 rounded-full border text-xs tracking-wide transition-colors ${
-                    moodTag === tag
-                      ? 'border-sage text-sage bg-sage/10'
-                      : 'border-stone/20 text-ink/35 hover:text-ink/55'
-                  }`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </div>
+            <div className="space-y-3">
+              <button
+                onClick={() => { setMethod('auto'); cast(); }}
+                className="w-full flex items-center gap-4 p-4 rounded border border-stone/30 hover:border-ink/40 hover:bg-ink/[0.02] transition-colors text-left"
+              >
+                <span className="flex-shrink-0 w-10 h-10 rounded-full border border-stone/30 flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-ink/60" strokeWidth={1.5} />
+                </span>
+                <span className="flex-1">
+                  <span className="block font-serif text-lg text-ink/90">Cast by the Dao</span>
+                  <span className="block text-sm text-ink/50">Yarrow stalk probabilities, cast by the Dao</span>
+                </span>
+                <ChevronRight className="w-4 h-4 text-ink/40" strokeWidth={1.5} />
+              </button>
 
-          <div className="pt-4 text-center">
-            <button
-              onClick={cast}
-              className="px-10 py-3 bg-ink text-parchment rounded tracking-widest text-sm uppercase hover:bg-ink/85 transition-colors"
-            >
-              Cast the Hexagram
-            </button>
+              <button
+                onClick={() => { setMethod('coin'); setCoinStep(0); setCoinLines([]); }}
+                className="w-full flex items-center gap-4 p-4 rounded border border-stone/30 hover:border-ink/40 hover:bg-ink/[0.02] transition-colors text-left"
+              >
+                <span className="flex-shrink-0 w-10 h-10 rounded-full border border-stone/30 flex items-center justify-center">
+                  <Coins className="w-4 h-4 text-ink/60" strokeWidth={1.5} />
+                </span>
+                <span className="flex-1">
+                  <span className="block font-serif text-lg text-ink/90">Three Coin Method</span>
+                  <span className="block text-sm text-ink/50">Toss three coins yourself and enter each result</span>
+                </span>
+                <ChevronRight className="w-4 h-4 text-ink/40" strokeWidth={1.5} />
+              </button>
+            </div>
           </div>
         </div>
       ) : (
