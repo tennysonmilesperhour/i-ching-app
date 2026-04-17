@@ -8,7 +8,7 @@ export function AuthProvider({ children }) {
   const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
-    // No remote auth — resolve immediately
+    // No remote auth  - resolve immediately
     setIsLoadingAuth(false);
   }, []);
 
