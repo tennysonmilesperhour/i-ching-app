@@ -115,7 +115,7 @@ export default function Oracle() {
       </div>
 
       {isCoinFlow ? (
-        /* Three Coin Method  - step-by-step input */
+        /* Three Coin Method: step-by-step input */
         <div className="space-y-8">
           {question && (
             <div>
@@ -151,7 +151,7 @@ export default function Oracle() {
                   Yin · 9 = Old Yang (changing).
                 </p>
                 <p>
-                  Build from the <em>bottom up</em>  - the first toss is the bottom line.
+                  Build from the <em>bottom up</em>: the first toss is the bottom line.
                 </p>
               </div>
             )}
@@ -171,7 +171,7 @@ export default function Oracle() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-xs tracking-widest uppercase text-ink/50">
-                Line {coinStep + 1}  - {LINE_LABELS[coinStep]}
+                Line {coinStep + 1}: {LINE_LABELS[coinStep]}
               </p>
               {coinLines.length > 0 && (
                 <button
