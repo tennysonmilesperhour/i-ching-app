@@ -6,10 +6,13 @@ import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
 import { HEXAGRAM_NAMES, getTrigrams } from '@/lib/hexagramData';
 import { HEXAGRAM_INTERPRETATIONS } from '@/lib/hexagramInterpretations';
+import { useAuth } from '@/lib/AuthContext';
+import AdSlot from '@/components/ads/AdSlot';
 
 export default function Reading() {
   const { id } = useParams();
   const queryClient = useQueryClient();
+  const { isGuest } = useAuth();
   const [notes, setNotes] = useState('');
   const [notesDirty, setNotesDirty] = useState(false);
 
@@ -189,6 +192,36 @@ export default function Reading() {
             </div>
           )}
         </div>
+
+        {isGuest && !reading.user_id && (
+          <div className="border-t border-stone/20 pt-8">
+            <div className="rounded border border-sage/40 bg-sage/5 px-6 py-6 text-center space-y-3">
+              <h2 className="font-serif text-lg text-ink/85">
+                Keep this reading.
+              </h2>
+              <p className="text-sm text-ink/55 leading-relaxed max-w-md mx-auto">
+                You&rsquo;re consulting as a guest. Create an account to save this
+                reading to a personal journal you can return to.
+              </p>
+              <div className="flex justify-center gap-3 pt-2 flex-wrap">
+                <Link
+                  to={`/signup?claimReading=${reading.id}`}
+                  className="px-5 py-2 bg-ink text-parchment rounded text-sm tracking-wide hover:bg-ink/85 transition-colors"
+                >
+                  Save &amp; Create Account
+                </Link>
+                <Link
+                  to={`/login?claimReading=${reading.id}&next=/reading/${reading.id}`}
+                  className="px-5 py-2 border border-stone/30 text-ink/60 rounded text-sm tracking-wide hover:text-ink hover:border-ink/30 transition-colors"
+                >
+                  I already have an account
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <AdSlot placement="reading-footer" className="border-t border-stone/20 pt-8" />
 
         <div className="border-t border-stone/20 pt-8 space-y-4">
           <div className="flex items-center justify-between">

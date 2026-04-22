@@ -1,24 +1,76 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { authClient } from '@/api/authClient';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
-  const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(false);
+  const [isLoadingPublicSettings] = useState(false);
   const [authError, setAuthError] = useState(null);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    // No remote auth: resolve immediately
+    const session = authClient.getSession();
+    if (session) setUser(session.user);
     setIsLoadingAuth(false);
   }, []);
 
-  const navigateToLogin = () => {};
+  const invalidateReadings = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['readings'] });
+    queryClient.invalidateQueries({ queryKey: ['reading'] });
+  }, [queryClient]);
 
-  return (
-    <AuthContext.Provider value={{ isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const signup = useCallback(async ({ email, password, displayName }) => {
+    setAuthError(null);
+    const session = await authClient.signup({ email, password, displayName });
+    setUser(session.user);
+    invalidateReadings();
+    return session.user;
+  }, [invalidateReadings]);
+
+  const login = useCallback(async ({ email, password }) => {
+    setAuthError(null);
+    const session = await authClient.login({ email, password });
+    setUser(session.user);
+    invalidateReadings();
+    return session.user;
+  }, [invalidateReadings]);
+
+  const logout = useCallback(() => {
+    authClient.logout();
+    setUser(null);
+    invalidateReadings();
+  }, [invalidateReadings]);
+
+  const updateProfile = useCallback((patch) => {
+    const updated = authClient.updateProfile(patch);
+    setUser(updated);
+    return updated;
+  }, []);
+
+  // Legacy no-op retained for App.jsx's auth-error redirect fallback.
+  const navigateToLogin = () => {
+    if (typeof window !== 'undefined') window.location.assign('/login');
+  };
+
+  const value = {
+    user,
+    isAuthenticated: !!user,
+    isGuest: !user,
+    isLoadingAuth,
+    isLoadingPublicSettings,
+    authError,
+    setAuthError,
+    signup,
+    login,
+    logout,
+    updateProfile,
+    navigateToLogin,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

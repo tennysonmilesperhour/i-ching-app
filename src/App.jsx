@@ -11,6 +11,9 @@ import Oracle from './pages/Oracle';
 import Reading from './pages/Reading';
 import Journal from './pages/Journal';
 import Timeline from './pages/Timeline';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Profile from './pages/Profile';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -43,6 +46,9 @@ const AuthenticatedApp = () => {
         <Route path="/reading/:id" element={<Reading />} />
         <Route path="/journal" element={<Journal />} />
         <Route path="/timeline" element={<Timeline />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
@@ -53,14 +59,14 @@ const AuthenticatedApp = () => {
 function App() {
 
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
+    <QueryClientProvider client={queryClientInstance}>
+      <AuthProvider>
         <Router>
           <AuthenticatedApp />
         </Router>
         <Toaster />
-      </QueryClientProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }
 
