@@ -27,33 +27,38 @@
     <meta name="twitter:description" content="Consult the I Ching online. Cast a hexagram, read its Judgment, Image, and Counsel, and keep a personal journal." />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate icon" href="/favicon.ico" />
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Baseline structured data. Per-route pages add Article / FAQ / etc. -->
+    <!--
+      Baseline structured data. Absolute URLs are hardcoded to the default
+      production host; keep in sync with VITE_SITE_URL, public/robots.txt, and
+      public/sitemap.xml if the domain changes. Per-route pages add Article /
+      FAQPage blocks via useJsonLd.
+    -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "WebSite",
-          "@id": "#website",
+          "@id": "https://i-ching-app.vercel.app/#website",
           "name": "I Ching · The Book of Changes",
           "alternateName": "Yijing Oracle",
-          "url": "/",
+          "url": "https://i-ching-app.vercel.app/",
           "inLanguage": "en",
           "description": "A minimalist online I Ching oracle with all 64 hexagrams, yarrow-stalk and three-coin methods, and a personal reading journal.",
-          "publisher": { "@id": "#organization" }
+          "publisher": { "@id": "https://i-ching-app.vercel.app/#organization" }
         },
         {
           "@type": "Organization",
-          "@id": "#organization",
+          "@id": "https://i-ching-app.vercel.app/#organization",
           "name": "I Ching · The Book of Changes",
-          "url": "/"
+          "url": "https://i-ching-app.vercel.app/"
         },
         {
           "@type": "WebApplication",
           "name": "I Ching Oracle",
+          "url": "https://i-ching-app.vercel.app/",
           "applicationCategory": "LifestyleApplication",
           "operatingSystem": "Web",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },

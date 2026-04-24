@@ -130,17 +130,16 @@ export function useJsonLd(id, data) {
   useEffect(() => {
     if (!id || !serialized) return undefined;
     const scriptId = `ld-${id}`;
-    let el = document.getElementById(scriptId);
-    if (!el) {
-      el = document.createElement('script');
-      el.type = 'application/ld+json';
-      el.id = scriptId;
-      document.head.appendChild(el);
-    }
-    el.textContent = serialized;
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = scriptId;
+    script.textContent = serialized;
+    // Replace any existing block with the same id so navigating back and
+    // forth doesn't accumulate stale entries.
+    document.head.querySelector(`script#${scriptId}`)?.remove();
+    document.head.appendChild(script);
     return () => {
-      const stillPresent = document.getElementById(scriptId);
-      if (stillPresent) stillPresent.textContent = '';
+      script.remove();
     };
   }, [id, serialized]);
 }

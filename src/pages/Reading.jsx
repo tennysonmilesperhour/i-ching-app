@@ -17,6 +17,17 @@ export default function Reading() {
   const [notes, setNotes] = useState('');
   const [notesDirty, setNotesDirty] = useState(false);
 
+  // Baseline SEO so loading/error states and the browser tab aren't stale
+  // with the previous page's title. ReadingSEO below overrides once the
+  // reading is loaded.
+  useSEO({
+    title: 'Reading',
+    description: 'An I Ching hexagram reading.',
+    path: `/reading/${id}`,
+    noindex: true,
+    ogType: 'article',
+  });
+
   const { data: reading, isLoading, error } = useQuery({
     queryKey: ['reading', id],
     queryFn: () => base44.entities.Reading.get(id),

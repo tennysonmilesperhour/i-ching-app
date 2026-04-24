@@ -1,0 +1,12 @@
+{
+  "name": "I Ching · The Book of Changes",
+  "short_name": "I Ching",
+  "description": "A quiet, minimalist I Ching oracle. Cast a hexagram and read its Judgment, Image, and Counsel.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5efe0",
+  "theme_color": "#f5efe0",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" }
+  ]
+}
