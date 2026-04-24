@@ -2,10 +2,71 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5efe0" />
+    <meta name="color-scheme" content="light" />
+
+    <title>I Ching · The Book of Changes — consult the ancient Chinese oracle online</title>
+    <meta
+      name="description"
+      content="A quiet, minimalist I Ching (Yijing) oracle. Cast a hexagram by yarrow-stalk probabilities or the three-coin method, read the Judgment, Image, and Counsel of any of the 64 hexagrams, and keep a personal journal of your readings."
+    />
+    <meta name="author" content="I Ching · The Book of Changes" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="I Ching · The Book of Changes" />
+    <meta property="og:title" content="I Ching · The Book of Changes" />
+    <meta property="og:description" content="Consult the I Ching online. Cast a hexagram, read its Judgment, Image, and Counsel, and keep a personal journal." />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="I Ching · The Book of Changes" />
+    <meta name="twitter:description" content="Consult the I Ching online. Cast a hexagram, read its Judgment, Image, and Counsel, and keep a personal journal." />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.json" />
-    <title>Base44 APP</title>
+
+    <!--
+      Baseline structured data. Absolute URLs are hardcoded to the default
+      production host; keep in sync with VITE_SITE_URL, public/robots.txt, and
+      public/sitemap.xml if the domain changes. Per-route pages add Article /
+      FAQPage blocks via useJsonLd.
+    -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://i-ching-app.vercel.app/#website",
+          "name": "I Ching · The Book of Changes",
+          "alternateName": "Yijing Oracle",
+          "url": "https://i-ching-app.vercel.app/",
+          "inLanguage": "en",
+          "description": "A minimalist online I Ching oracle with all 64 hexagrams, yarrow-stalk and three-coin methods, and a personal reading journal.",
+          "publisher": { "@id": "https://i-ching-app.vercel.app/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://i-ching-app.vercel.app/#organization",
+          "name": "I Ching · The Book of Changes",
+          "url": "https://i-ching-app.vercel.app/"
+        },
+        {
+          "@type": "WebApplication",
+          "name": "I Ching Oracle",
+          "url": "https://i-ching-app.vercel.app/",
+          "applicationCategory": "LifestyleApplication",
+          "operatingSystem": "Web",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "description": "Free online I Ching divination tool. Cast a hexagram and read its Judgment, Image, and Counsel from the 64 hexagrams of the Book of Changes."
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

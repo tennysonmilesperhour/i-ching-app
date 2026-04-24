@@ -2,8 +2,16 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
+import { useSEO } from '@/lib/seo';
 
 export default function Journal() {
+  useSEO({
+    title: 'Journal',
+    description: 'Your personal I Ching reading journal.',
+    path: '/journal',
+    noindex: true,
+  });
+
   const { data: readings, isLoading } = useQuery({
     queryKey: ['readings'],
     queryFn: () => base44.entities.Reading.list('-created_date'),

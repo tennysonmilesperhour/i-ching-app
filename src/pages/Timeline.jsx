@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
 import { HEXAGRAM_NAMES, HEXAGRAM_CHINESE } from '@/lib/hexagramData';
+import { useSEO } from '@/lib/seo';
 
 function formatDate(d) {
   return new Date(d).toLocaleDateString(undefined, {
@@ -11,6 +12,13 @@ function formatDate(d) {
 }
 
 export default function Timeline() {
+  useSEO({
+    title: 'Timeline',
+    description: 'A chronological timeline of your I Ching readings.',
+    path: '/timeline',
+    noindex: true,
+  });
+
   const { data: readings, isLoading } = useQuery({
     queryKey: ['readings-timeline'],
     queryFn: () => base44.entities.Reading.list('created_date'),

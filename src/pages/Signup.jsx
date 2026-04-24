@@ -3,8 +3,16 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '@/lib/AuthContext';
 import { base44 } from '@/api/base44Client';
+import { useSEO } from '@/lib/seo';
 
 export default function Signup() {
+  useSEO({
+    title: 'Create an account',
+    description: 'Create a free I Ching account to save your readings.',
+    path: '/signup',
+    noindex: true,
+  });
+
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const { signup } = useAuth();

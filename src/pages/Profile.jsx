@@ -4,13 +4,24 @@ import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useAuth } from '@/lib/AuthContext';
 import { base44 } from '@/api/base44Client';
+import { useSEO } from '@/lib/seo';
 
 export default function Profile() {
+  useSEO({
+    title: 'Profile',
+    description: 'Your I Ching profile and saved readings.',
+    path: '/profile',
+    noindex: true,
+  });
+
   const navigate = useNavigate();
   const { user, isAuthenticated, isLoadingAuth, logout, updateProfile } = useAuth();
 
   const [editing, setEditing] = useState(false);
-  const [displayName, setDisplayName] = useState(user?.displayName || '');
+  // Editing buffer. Seeded fresh from the user each time the edit form opens
+  // so it survives auth loading (user is null on first render) and resets on
+  // cancel without clearing what was displayed.
+  const [displayName, setDisplayName] = useState('');
 
   const { data: readings, isLoading } = useQuery({
     queryKey: ['readings'],
@@ -58,7 +69,10 @@ export default function Profile() {
           <span className="text-xs tracking-widest uppercase text-ink/40">Display Name</span>
           {!editing && (
             <button
-              onClick={() => setEditing(true)}
+              onClick={() => {
+                setDisplayName(user.displayName || '');
+                setEditing(true);
+              }}
               className="text-xs text-ink/50 underline underline-offset-4 hover:text-ink"
             >
               Edit
@@ -81,7 +95,7 @@ export default function Profile() {
                 Save
               </button>
               <button
-                onClick={() => { setEditing(false); setDisplayName(user.displayName); }}
+                onClick={() => setEditing(false)}
                 className="px-4 py-1.5 border border-stone/30 text-ink/60 rounded text-sm hover:text-ink hover:border-ink/30 transition-colors"
               >
                 Cancel

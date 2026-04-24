@@ -3,8 +3,16 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '@/lib/AuthContext';
 import { base44 } from '@/api/base44Client';
+import { useSEO } from '@/lib/seo';
 
 export default function Login() {
+  useSEO({
+    title: 'Sign in',
+    description: 'Sign in to your I Ching journal.',
+    path: '/login',
+    noindex: true,
+  });
+
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const { login } = useAuth();
