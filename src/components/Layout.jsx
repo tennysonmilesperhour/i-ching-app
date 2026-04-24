@@ -62,8 +62,16 @@ export default function Layout() {
 
       <AdSlot placement="site-footer" className="max-w-2xl mx-auto px-6 py-6" />
 
-      <footer className="border-t border-stone/20 py-10 text-center">
+      <footer className="border-t border-stone/20 py-10 text-center space-y-3">
         <p className="text-xs tracking-widest text-ink/25 uppercase">The Book of Changes · 周易</p>
+        <nav aria-label="Footer">
+          <Link
+            to="/about"
+            className="text-xs tracking-widest text-ink/35 hover:text-ink/70 uppercase"
+          >
+            About the I Ching
+          </Link>
+        </nav>
       </footer>
     </div>
   );

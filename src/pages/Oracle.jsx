@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { Sparkles, Coins, ChevronRight, ChevronUp, ChevronDown, Undo2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
+import { useSEO, useJsonLd } from '@/lib/seo';
 import {
   castReading,
   hexagramFromLines,
@@ -30,6 +31,60 @@ export default function Oracle() {
   const [coinStep, setCoinStep] = useState(null);
   const [coinLines, setCoinLines] = useState([]);
   const [showInstructions, setShowInstructions] = useState(true);
+
+  useSEO({
+    title: 'Consult the Dao — free I Ching reading',
+    description:
+      'Free online I Ching oracle. Form a question, cast a hexagram by yarrow-stalk probabilities or the three-coin method, and receive its Judgment, Image, and Counsel from the 64 hexagrams of the Book of Changes.',
+    path: '/',
+  });
+
+  useJsonLd('home-faq', {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What is the I Ching?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'The I Ching (also written Yijing, meaning "Book of Changes") is an ancient Chinese divination text and one of the oldest works of Chinese philosophy. It contains 64 hexagrams — six-line figures of broken and unbroken lines — each paired with a Judgment, Image, and commentary used to reflect on a situation.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How do I consult the I Ching?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Hold a sincere question in mind and generate six lines from bottom to top. Traditionally this is done by manipulating yarrow stalks or by tossing three coins six times. Each line is either young yin, young yang, old yin (changing), or old yang (changing), and together they form the primary hexagram and, if there are changing lines, a secondary "relating" hexagram.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What are the 64 hexagrams?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'The 64 hexagrams are every possible combination of six lines, each either yin (broken) or yang (unbroken). Each hexagram is an emblem for a situation or movement — such as Qian (The Creative), Kun (The Receptive), Zhen (The Arousing), or Lü (Treading) — and is read by meditating on its Judgment, Image, and any changing lines.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is the three-coin method?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'The three-coin method is a simplified way to cast the I Ching. You toss three coins six times, assigning heads = 3 and tails = 2. The sum of each throw gives the value of one line: 6 is old yin (changing), 7 is young yang, 8 is young yin, and 9 is old yang (changing). Lines are built from the bottom up.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do I need an account to use this I Ching app?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. You can cast and read a hexagram as a guest without creating an account. If you want to save readings across devices, return to them later, or keep a journal, you can create a free account — and a guest reading can be attached to a new account on signup.',
+        },
+      },
+    ],
+  });
 
   const cast = () => {
     const lines = castReading();

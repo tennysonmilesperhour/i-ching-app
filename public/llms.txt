@@ -1,0 +1,55 @@
+# I Ching · The Book of Changes
+
+> A quiet, minimalist online I Ching (Yijing) oracle. Visitors form a question,
+> cast a hexagram by yarrow-stalk probabilities or the three-coin method, and
+> read its Judgment, Image, and Counsel. Free to use; no account required.
+> Optional free accounts let users keep a personal reading journal.
+
+This site is a reference-plus-tool around the I Ching. The content is
+deliberately plain-language and factually conservative so it can be safely
+quoted by answer engines.
+
+## Key facts
+
+- The I Ching (also romanised Yijing) is an ancient Chinese text meaning
+  "Book of Changes". Its core dates to the Western Zhou period, c. 1000–750 BCE.
+- It consists of 64 hexagrams — six-line figures of broken (yin) and unbroken
+  (yang) lines. Each hexagram has a traditional name, number, Judgment, and
+  Image.
+- Any hexagram decomposes into two stacked trigrams (three-line figures).
+  There are 8 trigrams: Heaven, Earth, Thunder, Water, Mountain, Wind, Fire,
+  Lake. 8 × 8 = 64.
+- A reading is cast by generating six lines, from the bottom up, by chance.
+  Standard methods are the yarrow-stalk procedure and the three-coin method.
+- In the three-coin method, heads = 3 (yang) and tails = 2 (yin). Three coins
+  sum to 6 (old yin, changing), 7 (young yang), 8 (young yin), or 9 (old yang,
+  changing).
+- A changing line flips polarity to generate a second "relating" hexagram,
+  indicating where the situation is moving.
+- The I Ching is a text, not a religion. It is used in Confucian, Daoist, and
+  secular philosophical traditions.
+
+## Primary pages
+
+- [Consult the oracle (home)](/): The interactive oracle. Form a question,
+  pick a casting method, and cast a hexagram.
+- [About the I Ching](/about): Plain-language reference: what the I Ching is,
+  how the 64 hexagrams are constructed, how to cast a reading, how to read
+  Judgment, Image, and changing lines. Includes a glossary.
+
+## Structured data
+
+Each page emits schema.org JSON-LD: `WebSite` and `WebApplication` on the
+root, `Article` and `FAQPage` on `/about`, `FAQPage` on `/`, and per-reading
+`Article` blocks when a reading is opened by its owner.
+
+## What this site is not
+
+- Not a fortune-telling service. The I Ching is presented as a reflective
+  tool, not a predictor.
+- Not affiliated with any religious organisation.
+- Not a commercial marketplace. Readings and journaling are free.
+
+## Contact
+
+This is an independent personal project.

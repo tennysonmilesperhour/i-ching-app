@@ -1,0 +1,90 @@
+# -----------------------------------------------------------------------------
+# robots.txt for I Ching · The Book of Changes
+#
+# Public reference content is fully indexable. Per-user pages (/reading/*,
+# /journal, /timeline, /profile) are separately marked noindex at the document
+# level since their URLs are unpredictable and not meaningful to outsiders.
+#
+# AI crawlers (ChatGPT, Claude, Perplexity, Google AI Overviews, Apple
+# Intelligence, You.com, etc.) are explicitly allowed — we want our reference
+# content about the I Ching, hexagrams, and casting methods to be citable by
+# generative answer engines.
+# -----------------------------------------------------------------------------
+
+User-agent: *
+Disallow: /profile
+Disallow: /journal
+Disallow: /timeline
+Disallow: /login
+Disallow: /signup
+Disallow: /reading/
+Allow: /
+
+# --- Generative / answer engines --------------------------------------------
+# Listed individually so the posture is explicit even if we later tighten
+# User-agent: * above.
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Absolute URL required by the sitemap spec. Update the host here if the
+# production domain changes; the same URL is used in public/sitemap.xml and
+# in VITE_SITE_URL for in-page canonical tags.
+Sitemap: https://i-ching-app.vercel.app/sitemap.xml

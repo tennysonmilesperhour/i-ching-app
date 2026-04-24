@@ -4,8 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useAuth } from '@/lib/AuthContext';
 import { base44 } from '@/api/base44Client';
+import { useSEO } from '@/lib/seo';
 
 export default function Profile() {
+  useSEO({
+    title: 'Profile',
+    description: 'Your I Ching profile and saved readings.',
+    path: '/profile',
+    noindex: true,
+  });
+
   const navigate = useNavigate();
   const { user, isAuthenticated, isLoadingAuth, logout, updateProfile } = useAuth();
 

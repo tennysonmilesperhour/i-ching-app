@@ -8,6 +8,7 @@ import { HEXAGRAM_NAMES, getTrigrams } from '@/lib/hexagramData';
 import { HEXAGRAM_INTERPRETATIONS } from '@/lib/hexagramInterpretations';
 import { useAuth } from '@/lib/AuthContext';
 import AdSlot from '@/components/ads/AdSlot';
+import { useSEO, useJsonLd, absoluteUrl } from '@/lib/seo';
 
 export default function Reading() {
   const { id } = useParams();
@@ -68,8 +69,26 @@ export default function Reading() {
     : null;
   const trigrams = getTrigrams(reading.lines);
 
+  const pageTitle = `Hexagram ${reading.hexagram_number}. ${reading.hexagram_name}`;
+  const metaDescription = [
+    `I Ching hexagram ${reading.hexagram_number}, ${reading.hexagram_name}.`,
+    interpretation?.judgment ? `Judgment: ${interpretation.judgment}` : null,
+    reading.changing_lines?.length
+      ? `Changing lines: ${reading.changing_lines.map((i) => i + 1).join(', ')}${
+          relatingName ? ` — relating to hexagram ${reading.relating_hexagram} (${relatingName}).` : '.'
+        }`
+      : null,
+  ].filter(Boolean).join(' ').slice(0, 300);
+
   return (
     <div className="max-w-2xl mx-auto px-6 py-12">
+      <ReadingSEO
+        reading={reading}
+        interpretation={interpretation}
+        relatingName={relatingName}
+        pageTitle={pageTitle}
+        metaDescription={metaDescription}
+      />
       <Link to="/journal" className="text-xs tracking-widest uppercase text-ink/35 hover:text-ink/60 transition-colors">
         &larr; Journal
       </Link>
@@ -258,4 +277,45 @@ export default function Reading() {
       </div>
     </div>
   );
+}
+
+function ReadingSEO({ reading, interpretation, relatingName, pageTitle, metaDescription }) {
+  useSEO({
+    title: pageTitle,
+    description: metaDescription,
+    path: `/reading/${reading.id}`,
+    ogType: 'article',
+    // Reading URLs are only meaningful to their owner, so don't surface them
+    // in search indexes; the hexagram reference content lives at /about and
+    // on the home page. Keep the tags readable if shared directly though.
+    noindex: true,
+  });
+
+  useJsonLd(`reading-${reading.id}`, {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `Hexagram ${reading.hexagram_number}: ${reading.hexagram_name}`,
+    datePublished: reading.created_date,
+    dateModified: reading.created_date,
+    url: absoluteUrl(`/reading/${reading.id}`),
+    description: metaDescription,
+    author: { '@type': 'Organization', name: 'I Ching · The Book of Changes' },
+    about: {
+      '@type': 'Thing',
+      name: `I Ching Hexagram ${reading.hexagram_number} — ${reading.hexagram_name}`,
+      description: interpretation?.judgment || undefined,
+    },
+    isPartOf: { '@id': `${absoluteUrl('/')}#website` },
+    keywords: [
+      'I Ching',
+      'Yijing',
+      'Book of Changes',
+      `Hexagram ${reading.hexagram_number}`,
+      reading.hexagram_name,
+      relatingName ? `Hexagram ${reading.relating_hexagram}` : null,
+      relatingName || null,
+    ].filter(Boolean).join(', '),
+  });
+
+  return null;
 }
