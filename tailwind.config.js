@@ -7,6 +7,7 @@ module.exports = {
       fontFamily: {
         serif: ['Cormorant Garamond', 'Georgia', 'serif'],
         display: ['IM Fell English', 'Georgia', 'serif'],
+        sans: ['ui-sans-serif', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
       },
   		borderRadius: {
   			lg: 'var(--radius)',

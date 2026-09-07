@@ -1,7 +1,27 @@
-# Test
 node_modules/
 dist/
+.dist-stale-codex/
+.dist-attempt-codex/
+.node_modules-stale-codex/
+.node_modules-duplicate-codex/
+.package-lock-stale-codex
+.public-stale-codex/
 package-lock.json
 .env
 .env.local
 .env.*.local
+.vercel
+.impeccable/
+/node_modules 3/
+/ios/App/App/config 2.xml
+/ios/App/App/public/* 2.*
+/ios/App/App/.public-stale-codex/
+/ios/App/.Pods-stale-codex/
+/ios/App/Pods/
+/ios/App/App/public/
+/ios/capacitor-cordova-ios-plugins/* 2.podspec
+/app-store/build/
+/app-store/archive/
+/app-store/capture/
+/app-store/screenshots/.iphone-6.9-guided-deep-old/
+/app-store/screenshots/.ipad-13-guided-deep-old/

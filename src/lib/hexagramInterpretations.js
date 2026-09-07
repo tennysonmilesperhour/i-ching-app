@@ -1,11 +1,12 @@
 /**
- * Hexagram interpretations: practical guidance inspired by Brian Browne
- * Walker's accessible style. Three sections each:
+ * Hexagram interpretations: original, contemporary practical guidance.
+ * The tone is influenced by accessible modern English commentarial traditions,
+ * including Brian Browne Walker. Three sections each:
  *   judgment: the core situation and what the moment calls for
  *   image:    the natural/poetic metaphor of the two trigrams
- *   counsel:  direct, actionable guidance for the seeker
+ *   counsel:  direct, actionable guidance for the reader
  *
- * Original paraphrases, not direct quotations.
+ * These are original paraphrases, not classical translations or quotations.
  */
 
 export const HEXAGRAM_INTERPRETATIONS = {

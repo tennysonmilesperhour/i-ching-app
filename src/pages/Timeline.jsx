@@ -28,7 +28,7 @@ export default function Timeline() {
     <div className="max-w-3xl mx-auto px-6 py-12">
       <div className="mb-12 text-center">
         <h1 className="text-2xl font-serif tracking-wide text-ink/90">Timeline</h1>
-        <p className="text-xs text-ink/35 tracking-widest uppercase mt-1">
+        <p className="text-xs text-ink/55 tracking-widest uppercase mt-1">
           Your journey through the changes
         </p>
       </div>
@@ -39,7 +39,7 @@ export default function Timeline() {
         </div>
       ) : !sorted.length ? (
         <div className="text-center py-16">
-          <p className="text-ink/30 mb-4">No readings yet.</p>
+          <p className="text-ink/55 mb-4">No readings yet.</p>
           <Link to="/" className="text-sm text-ink/50 underline underline-offset-4 hover:text-ink">
             Consult the Dao
           </Link>
@@ -47,7 +47,7 @@ export default function Timeline() {
       ) : (
         <div className="relative">
           {/* Central vertical line */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-stone/20 -translate-x-px" />
+          <div className="absolute bottom-0 left-4 top-0 w-px -translate-x-px bg-stone/25 md:left-1/2" />
 
           <div className="space-y-16">
             {sorted.map((r, idx) => {
@@ -63,36 +63,18 @@ export default function Timeline() {
               return (
                 <div key={r.id} className="relative flex items-start">
                   {/* Dot on the line */}
-                  <div className="absolute left-1/2 top-8 -translate-x-1/2 z-10">
+                  <div className="absolute left-4 top-8 z-10 -translate-x-1/2 md:left-1/2">
                     <div className="w-3 h-3 rounded-full border-2 border-stone/30 bg-parchment" />
                   </div>
 
-                  {/* Card */}
-                  {isLeft ? (
-                    <>
-                      <div className="w-[calc(50%-24px)] pr-2">
-                        <TimelineCard
-                          reading={r}
-                          chinese={chinese}
-                          relatingChinese={relatingChinese}
-                          relatingName={relatingName}
-                        />
-                      </div>
-                      <div className="w-[calc(50%+24px)]" />
-                    </>
-                  ) : (
-                    <>
-                      <div className="w-[calc(50%+24px)]" />
-                      <div className="w-[calc(50%-24px)] pl-2">
-                        <TimelineCard
-                          reading={r}
-                          chinese={chinese}
-                          relatingChinese={relatingChinese}
-                          relatingName={relatingName}
-                        />
-                      </div>
-                    </>
-                  )}
+                  <div className={`ml-10 w-[calc(100%-2.5rem)] md:w-[calc(50%-24px)] ${isLeft ? 'md:ml-0 md:mr-auto md:pr-2' : 'md:ml-auto md:pl-2'}`}>
+                    <TimelineCard
+                      reading={r}
+                      chinese={chinese}
+                      relatingChinese={relatingChinese}
+                      relatingName={relatingName}
+                    />
+                  </div>
                 </div>
               );
             })}
@@ -115,7 +97,7 @@ function TimelineCard({ reading: r, chinese, relatingChinese, relatingName }) {
           <p className="font-serif text-lg text-ink/85 group-hover:text-ink transition-colors leading-tight">
             {r.hexagram_name}
           </p>
-          <p className="text-xs text-ink/35 mt-0.5">#{r.hexagram_number}</p>
+          <p className="text-xs text-ink/55 mt-0.5">#{r.hexagram_number}</p>
         </div>
         <span className="text-4xl text-ink/70 font-serif leading-none shrink-0">
           {chinese}
@@ -124,7 +106,7 @@ function TimelineCard({ reading: r, chinese, relatingChinese, relatingName }) {
 
       {/* Hexagram visual */}
       <div className="flex justify-center my-3">
-        <HexagramVisual lines={r.lines} size="md" showChanging />
+        <HexagramVisual lines={r.lines} size="md" showChanging label={`Hexagram ${r.hexagram_number}, ${r.hexagram_name}`} />
       </div>
 
       {/* Question */}
@@ -134,9 +116,16 @@ function TimelineCard({ reading: r, chinese, relatingChinese, relatingName }) {
         </p>
       )}
 
+      {r.practice_intention && (
+        <div className="mt-3 rounded border border-sage/30 bg-sage/5 px-3 py-2">
+          <p className="text-[10px] tracking-widest uppercase text-ink/55">Practice</p>
+          <p className="mt-1 text-sm leading-relaxed text-ink/70">{r.practice_intention}</p>
+        </div>
+      )}
+
       {/* Date */}
       {r.created_date && (
-        <p className="text-xs text-ink/35 mt-2">
+        <p className="text-xs text-ink/55 mt-2">
           {formatDate(r.created_date)}
         </p>
       )}

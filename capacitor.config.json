@@ -1,0 +1,10 @@
+{
+  "appId": "com.thefreeiching.app",
+  "appName": "The Free I Ching",
+  "webDir": "dist",
+  "ios": {
+    "backgroundColor": "#f8f5ef",
+    "contentInset": "automatic",
+    "preferredContentMode": "mobile"
+  }
+}

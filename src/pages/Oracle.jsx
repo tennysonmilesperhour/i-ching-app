@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Sparkles, Coins, ChevronRight, ChevronUp, ChevronDown, Undo2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import HexagramVisual from '@/components/HexagramVisual';
+import ReadingInterpretation from '@/components/ReadingInterpretation';
+import ReadingModeSelector from '@/components/ReadingModeSelector';
+import SupportBanner from '@/components/SupportBanner';
 import {
   castReading,
   hexagramFromLines,
@@ -14,22 +17,23 @@ import {
 
 const LINE_LABELS = ['Bottom', '2', '3', '4', '5', 'Top'];
 const HEADS_TO_LINE = { 0: 6, 1: 7, 2: 8, 3: 9 };
-const LINE_DESCRIPTIONS = {
-  6: 'Old Yin (changing)',
-  7: 'Young Yang',
-  8: 'Young Yin',
-  9: 'Old Yang (changing)',
-};
 
 export default function Oracle() {
   const navigate = useNavigate();
   const [question, setQuestion] = useState('');
+  const [readingMode, setReadingMode] = useState('inquirer');
   const [method, setMethod] = useState(null);
   const [reading, setReading] = useState(null);
   const [saving, setSaving] = useState(false);
   const [coinStep, setCoinStep] = useState(null);
   const [coinLines, setCoinLines] = useState([]);
   const [showInstructions, setShowInstructions] = useState(true);
+
+  useEffect(() => {
+    if (reading) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  }, [reading]);
 
   const cast = () => {
     const lines = castReading();
@@ -81,6 +85,9 @@ export default function Oracle() {
         relating_hexagram: reading.relating_hexagram,
         question: question || undefined,
         method,
+        reading_mode: readingMode,
+        content_version: '2026.08',
+        algorithm_version: '2',
       };
       const created = await base44.entities.Reading.create(record);
       toast.success('Reading saved to your journal');
@@ -117,10 +124,12 @@ export default function Oracle() {
       {isCoinFlow ? (
         /* Three Coin Method: step-by-step input */
         <div className="space-y-8">
+          <ReadingModeSelector value={readingMode} onChange={setReadingMode} compact />
+
           {question && (
             <div>
-              <label className="block text-xs tracking-widest uppercase text-ink/40 mb-2">
-                Your Question <span className="normal-case tracking-normal text-ink/30">(optional)</span>
+              <label className="block text-xs tracking-widest uppercase text-ink/55 mb-2">
+                Your Question <span className="normal-case tracking-normal text-ink/50">(optional)</span>
               </label>
               <div className="w-full bg-transparent border border-stone/30 rounded px-4 py-3 text-ink/60 text-sm">
                 {question}
@@ -136,8 +145,8 @@ export default function Oracle() {
             >
               <span className="font-serif text-ink/80">How to toss the coins</span>
               {showInstructions
-                ? <ChevronUp className="w-4 h-4 text-ink/40" />
-                : <ChevronDown className="w-4 h-4 text-ink/40" />
+                ? <ChevronUp className="w-4 h-4 text-ink/55" />
+                : <ChevronDown className="w-4 h-4 text-ink/55" />
               }
             </button>
             {showInstructions && (
@@ -160,7 +169,7 @@ export default function Oracle() {
           {/* Progress indicator + hexagram visual */}
           {coinLines.length > 0 && (
             <div className="flex flex-col items-center gap-3">
-              <p className="text-xs tracking-widest uppercase text-ink/40">
+              <p className="text-xs tracking-widest uppercase text-ink/55">
                 Lines cast: {coinLines.length} of 6
               </p>
               <HexagramVisual lines={coinLines} size="md" partial />
@@ -176,7 +185,7 @@ export default function Oracle() {
               {coinLines.length > 0 && (
                 <button
                   onClick={undoLastLine}
-                  className="flex items-center gap-1 text-xs text-ink/35 hover:text-ink/60 transition-colors"
+                  className="flex items-center gap-1 text-xs text-ink/55 hover:text-ink/75 transition-colors"
                   title="Undo last line"
                 >
                   <Undo2 className="w-3 h-3" strokeWidth={1.5} />
@@ -203,36 +212,38 @@ export default function Oracle() {
       ) : !reading ? (
         /* Method selection */
         <div className="space-y-8">
+          <ReadingModeSelector value={readingMode} onChange={setReadingMode} />
+
           <div>
-            <label className="block text-xs tracking-widest uppercase text-ink/40 mb-2">
-              Your Question <span className="normal-case tracking-normal text-ink/30">(optional)</span>
+            <label className="block text-xs tracking-widest uppercase text-ink/55 mb-2">
+              Your Question <span className="normal-case tracking-normal text-ink/50">(optional)</span>
             </label>
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="What do I need to understand about..."
-              className="w-full bg-transparent border border-stone/30 rounded px-4 py-3 text-ink placeholder:text-ink/25 focus:outline-none focus:border-ink/40 resize-none"
+              className="w-full bg-transparent border border-stone/30 rounded px-4 py-3 text-ink placeholder:text-ink/45 focus:outline-none focus:border-ink/50 resize-none"
               rows={3}
             />
           </div>
 
           <div>
-            <label className="block text-xs tracking-widest uppercase text-ink/40 mb-4">
+            <label className="block text-xs tracking-widest uppercase text-ink/55 mb-4">
               Choose Your Method
             </label>
             <div className="space-y-3">
               <button
-                onClick={() => { setMethod('auto'); cast(); }}
+                onClick={() => { setMethod('yarrow'); cast(); }}
                 className="w-full flex items-center gap-4 p-4 rounded border border-stone/30 hover:border-ink/40 hover:bg-ink/[0.02] transition-colors text-left"
               >
                 <span className="flex-shrink-0 w-10 h-10 rounded-full border border-stone/30 flex items-center justify-center">
                   <Sparkles className="w-4 h-4 text-ink/60" strokeWidth={1.5} />
                 </span>
                 <span className="flex-1">
-                  <span className="block font-serif text-lg text-ink/90">Cast by the Dao</span>
-                  <span className="block text-sm text-ink/50">Yarrow stalk probabilities, cast by the Dao</span>
+                  <span className="block font-serif text-lg text-ink/90">Oracle Cast</span>
+                  <span className="block text-sm text-ink/50">Traditional yarrow weighting, cast in an instant</span>
                 </span>
-                <ChevronRight className="w-4 h-4 text-ink/40" strokeWidth={1.5} />
+                <ChevronRight className="w-4 h-4 text-ink/55" strokeWidth={1.5} />
               </button>
 
               <button
@@ -246,7 +257,7 @@ export default function Oracle() {
                   <span className="block font-serif text-lg text-ink/90">Three Coin Method</span>
                   <span className="block text-sm text-ink/50">Toss three coins yourself and enter each result</span>
                 </span>
-                <ChevronRight className="w-4 h-4 text-ink/40" strokeWidth={1.5} />
+                <ChevronRight className="w-4 h-4 text-ink/55" strokeWidth={1.5} />
               </button>
             </div>
           </div>
@@ -254,6 +265,8 @@ export default function Oracle() {
       ) : (
         /* Post-cast result */
         <div className="space-y-10">
+          <ReadingModeSelector value={readingMode} onChange={setReadingMode} compact />
+
           {question && (
             <p className="text-center text-ink/50 italic text-lg font-serif">&ldquo;{question}&rdquo;</p>
           )}
@@ -266,20 +279,25 @@ export default function Oracle() {
                 {reading.hexagram_number}. {reading.hexagram_name}
               </p>
               {reading.relating_hexagram && (
-                <p className="text-sm text-ink/40 mt-2">
+                <p className="text-sm text-ink/55 mt-2">
                   Changing to {reading.relating_hexagram}. {reading.relating_name}
                 </p>
               )}
             </div>
 
             {reading.changing_lines.length > 0 && (
-              <div className="text-xs text-ink/35 tracking-wide">
+              <div className="text-xs text-ink/55 tracking-wide">
                 Changing lines: {reading.changing_lines.map((i) => i + 1).join(', ')}
               </div>
             )}
           </div>
 
-          <div className="flex justify-center gap-4 pt-4">
+          <ReadingInterpretation
+            reading={{ ...reading, method, reading_mode: readingMode }}
+            mode={readingMode}
+          />
+
+          <div className="flex flex-wrap justify-center gap-4 border-t border-stone/20 pt-8">
             <button
               onClick={save}
               disabled={saving}
@@ -294,6 +312,8 @@ export default function Oracle() {
               Cast Again
             </button>
           </div>
+
+          <SupportBanner />
         </div>
       )}
     </div>

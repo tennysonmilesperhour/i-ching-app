@@ -50,12 +50,12 @@ export default function Profile() {
     <div className="max-w-2xl mx-auto px-6 py-12">
       <div className="mb-10">
         <h1 className="text-2xl font-serif tracking-wide text-ink/90">Profile</h1>
-        <p className="text-xs text-ink/35 tracking-widest uppercase mt-1">{user.email}</p>
+        <p className="text-xs text-ink/55 tracking-widest uppercase mt-1">{user.email}</p>
       </div>
 
       <div className="border border-stone/20 rounded p-5 mb-10 space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-xs tracking-widest uppercase text-ink/40">Display Name</span>
+          <span className="text-xs tracking-widest uppercase text-ink/55">Display Name</span>
           {!editing && (
             <button
               onClick={() => setEditing(true)}
@@ -94,13 +94,13 @@ export default function Profile() {
       </div>
 
       <div className="mb-10">
-        <h2 className="text-xs tracking-widest uppercase text-ink/40 mb-4">Saved Readings</h2>
+        <h2 className="text-xs tracking-widest uppercase text-ink/55 mb-4">Saved Readings</h2>
         {isLoading ? (
           <div className="flex justify-center py-8">
             <div className="w-5 h-5 border-2 border-stone/30 border-t-ink/60 rounded-full animate-spin" />
           </div>
         ) : !readings?.length ? (
-          <p className="text-sm text-ink/40">
+          <p className="text-sm text-ink/55">
             You have no saved readings yet.{' '}
             <Link to="/" className="underline underline-offset-4 text-ink">
               Consult the Oracle

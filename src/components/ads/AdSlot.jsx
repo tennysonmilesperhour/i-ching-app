@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { getAdsenseClient, loadAdSense } from './adsenseLoader';
+import { isNativePlatform } from '@/lib/platform';
 
 /**
  * AdSlot — a single AdSense ad unit.
@@ -45,9 +46,10 @@ export default function AdSlot({
 }) {
   const insRef = useRef(null);
   const pushedRef = useRef(false);
+  const native = isNativePlatform();
   const client = getAdsenseClient();
   const slotId = resolveSlotId(placement, slot);
-  const enabled = Boolean(client && slotId);
+  const enabled = Boolean(!native && client && slotId);
 
   useEffect(() => {
     if (!enabled || pushedRef.current) return;
@@ -63,6 +65,8 @@ export default function AdSlot({
     });
     return () => { cancelled = true; };
   }, [enabled, slotId, placement]);
+
+  if (native) return null;
 
   if (!enabled) {
     if (import.meta.env.DEV) {

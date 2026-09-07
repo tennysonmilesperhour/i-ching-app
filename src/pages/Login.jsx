@@ -45,23 +45,23 @@ export default function Login() {
     <div className="max-w-md mx-auto px-6 py-16">
       <div className="mb-10 text-center">
         <h1 className="text-2xl font-serif tracking-wide text-ink/90">Sign In</h1>
-        <p className="text-xs text-ink/35 tracking-widest uppercase mt-1">Continue your journal</p>
+        <p className="text-xs text-ink/55 tracking-widest uppercase mt-1">Continue your journal</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block text-xs tracking-widest uppercase text-ink/40 mb-2">Email</label>
+          <label className="block text-xs tracking-widest uppercase text-ink/55 mb-2">Email</label>
           <input
             type="email"
             autoComplete="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-transparent border border-stone/30 rounded px-4 py-3 text-ink placeholder:text-ink/25 focus:outline-none focus:border-ink/40"
+            className="w-full bg-transparent border border-stone/30 rounded px-4 py-3 text-ink placeholder:text-ink/45 focus:outline-none focus:border-ink/50"
           />
         </div>
         <div>
-          <label className="block text-xs tracking-widest uppercase text-ink/40 mb-2">Password</label>
+          <label className="block text-xs tracking-widest uppercase text-ink/55 mb-2">Password</label>
           <input
             type="password"
             autoComplete="current-password"

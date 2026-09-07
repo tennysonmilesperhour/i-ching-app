@@ -14,6 +14,13 @@ import Timeline from './pages/Timeline';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
+import Library from './pages/Library';
+import HexagramGuide from './pages/HexagramGuide';
+import Privacy from './pages/Privacy';
+import Support from './pages/Support';
+import SupportThanks from './pages/SupportThanks';
+import Supporter from './pages/Supporter';
+import { SupporterProvider } from '@/lib/SupporterContext';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -46,6 +53,12 @@ const AuthenticatedApp = () => {
         <Route path="/reading/:id" element={<Reading />} />
         <Route path="/journal" element={<Journal />} />
         <Route path="/timeline" element={<Timeline />} />
+        <Route path="/library" element={<Library />} />
+        <Route path="/library/:number" element={<HexagramGuide />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/support/thanks" element={<SupportThanks />} />
+        <Route path="/supporter" element={<Supporter />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
@@ -60,12 +73,14 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClientInstance}>
-      <AuthProvider>
-        <Router>
-          <AuthenticatedApp />
-        </Router>
-        <Toaster />
-      </AuthProvider>
+      <SupporterProvider>
+        <AuthProvider>
+          <Router>
+            <AuthenticatedApp />
+          </Router>
+          <Toaster />
+        </AuthProvider>
+      </SupporterProvider>
     </QueryClientProvider>
   )
 }

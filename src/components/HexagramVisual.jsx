@@ -1,6 +1,12 @@
 import { getLineType } from '../lib/hexagramData';
 
-export default function HexagramVisual({ lines, size = 'md', showChanging = false, partial = false }) {
+export default function HexagramVisual({
+  lines,
+  size = 'md',
+  showChanging = false,
+  partial = false,
+  label,
+}) {
   if (!lines || lines.length === 0) return null;
   if (!partial && lines.length !== 6) return null;
 
@@ -17,9 +23,21 @@ export default function HexagramVisual({ lines, size = 'md', showChanging = fals
     : [...lines].reverse();
   const displayLines = paddedLines;
   const totalH = totalSlots * c.h + (totalSlots - 1) * c.gap;
+  const lineDescription = lines.map((value) => {
+    const { yin, changing } = getLineType(value);
+    return `${yin ? 'yin' : 'yang'}${changing ? ', changing' : ''}`;
+  }).join('; ');
+  const accessibleLabel = label || `${partial ? 'Partial hexagram' : 'Hexagram'}, bottom to top: ${lineDescription}`;
 
   return (
-    <svg width={c.w + (showChanging ? 20 : 0)} height={totalH} viewBox={`0 0 ${c.w + (showChanging ? 20 : 0)} ${totalH}`}>
+    <svg
+      width={c.w + (showChanging ? 20 : 0)}
+      height={totalH}
+      viewBox={`0 0 ${c.w + (showChanging ? 20 : 0)} ${totalH}`}
+      role="img"
+      aria-label={accessibleLabel}
+      focusable="false"
+    >
       {displayLines.map((val, idx) => {
         const y = idx * (c.h + c.gap);
         if (val === null) {

@@ -21,7 +21,7 @@ function trigramIndex(a, b, c) {
   return (bit(c) << 2) | (bit(b) << 1) | bit(a);
 }
 
-// King Wen sequence lookup [lower trigram index][upper trigram index]
+// King Wen sequence lookup [upper trigram index][lower trigram index]
 // Trigram indices: 0=Kun 1=Zhen 2=Kan 3=Dui 4=Gen 5=Li 6=Xun 7=Qian
 const KING_WEN = [
   [ 2, 24,  7, 19, 15, 36, 46, 11],
@@ -37,7 +37,7 @@ const KING_WEN = [
 export function hexagramFromLines(lines) {
   const lower = trigramIndex(lines[0], lines[1], lines[2]);
   const upper = trigramIndex(lines[3], lines[4], lines[5]);
-  return KING_WEN[lower][upper];
+  return KING_WEN[upper][lower];
 }
 
 // Trigram metadata keyed by the same index used in KING_WEN
@@ -59,6 +59,20 @@ export function getTrigrams(lines) {
     lower: TRIGRAMS[trigramIndex(lines[0], lines[1], lines[2])],
     upper: TRIGRAMS[trigramIndex(lines[3], lines[4], lines[5])],
   };
+}
+
+function stableLinesForTrigram(index) {
+  return [0, 1, 2].map((bit) => (index & (1 << bit) ? 7 : 8));
+}
+
+export function getLinesForHexagram(number) {
+  for (let upper = 0; upper < KING_WEN.length; upper += 1) {
+    const lower = KING_WEN[upper].indexOf(number);
+    if (lower !== -1) {
+      return [...stableLinesForTrigram(lower), ...stableLinesForTrigram(upper)];
+    }
+  }
+  return null;
 }
 
 export function getRelatingHexagram(lines) {
@@ -156,13 +170,42 @@ export const HEXAGRAM_CHINESE = {
   57: "巽", 58: "兌", 59: "渙", 60: "節", 61: "中孚", 62: "小過", 63: "既濟", 64: "未濟",
 };
 
-// Simulate three-coin toss for a single line
-export function tossCoinLine() {
-  const coins = [0, 0, 0].map(() => (Math.random() < 0.5 ? 2 : 3));
-  return coins[0] + coins[1] + coins[2]; // produces 6, 7, 8, or 9
+function secureRandomInt(maxExclusive) {
+  const cryptoApi = globalThis.crypto;
+  if (!cryptoApi?.getRandomValues) {
+    throw new Error('Secure random values are unavailable in this browser.');
+  }
+
+  const range = 0x100000000;
+  const rejectionLimit = range - (range % maxExclusive);
+  const buffer = new Uint32Array(1);
+  let value;
+
+  do {
+    cryptoApi.getRandomValues(buffer);
+    value = buffer[0];
+  } while (value >= rejectionLimit);
+
+  return value % maxExclusive;
 }
 
-// Generate a full six-line reading via coin method
+export function yarrowLineFromIndex(index) {
+  if (!Number.isInteger(index) || index < 0 || index > 15) {
+    throw new RangeError('Yarrow index must be an integer from 0 through 15.');
+  }
+  if (index === 0) return 6;
+  if (index <= 5) return 7;
+  if (index <= 12) return 8;
+  return 9;
+}
+
+// Generate one line with traditional yarrow-stalk weighting:
+// 6 = 1/16, 7 = 5/16, 8 = 7/16, 9 = 3/16.
+export function castYarrowLine() {
+  return yarrowLineFromIndex(secureRandomInt(16));
+}
+
+// Generate a full six-line reading with yarrow-stalk probabilities.
 export function castReading() {
-  return Array.from({ length: 6 }, tossCoinLine);
+  return Array.from({ length: 6 }, castYarrowLine);
 }
