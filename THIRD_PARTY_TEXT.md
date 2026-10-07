@@ -14,3 +14,8 @@ The contemporary judgment, image, and counsel in
 `src/lib/hexagramInterpretations.js` are original paraphrases written for this
 application. They are interpretation, not quotations from a canonical
 translation.
+
+The same line text is republished at `/data/hexagram-lines.json` and
+`/data/hexagram-lines.csv` on thefreeiching.com under its original CC0 terms,
+with credit to `jesshewitt/i-ching`. All other open data files are original to
+this project and licensed CC BY 4.0.

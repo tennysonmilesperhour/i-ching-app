@@ -2,8 +2,1119 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/mcp",
+      "destination": "/api/mcp"
+    },
+    {
+      "source": "/((?!api/|llms/|data/|\\.well-known/).*)",
+      "destination": "/app.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/index.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/1.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/1>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/2.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/2>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/3.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/3>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/4.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/4>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/5.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/5>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/6.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/6>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/7.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/7>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/8.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/8>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/9.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/9>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/10.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/10>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/11.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/11>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/12.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/12>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/13.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/13>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/14.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/14>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/15.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/15>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/16.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/16>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/17.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/17>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/18.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/18>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/19.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/19>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/20.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/20>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/21.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/21>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/22.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/22>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/23.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/23>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/24.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/24>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/25.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/25>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/26.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/26>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/27.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/27>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/28.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/28>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/29.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/29>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/30.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/30>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/31.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/31>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/32.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/32>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/33.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/33>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/34.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/34>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/35.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/35>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/36.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/36>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/37.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/37>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/38.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/38>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/39.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/39>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/40.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/40>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/41.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/41>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/42.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/42>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/43.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/43>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/44.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/44>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/45.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/45>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/46.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/46>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/47.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/47>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/48.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/48>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/49.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/49>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/50.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/50>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/51.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/51>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/52.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/52>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/53.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/53>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/54.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/54>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/55.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/55>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/56.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/56>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/57.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/57>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/58.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/58>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/59.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/59>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/60.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/60>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/61.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/61>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/62.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/62>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/63.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/63>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/library/64.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/library/64>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/trigrams.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/trigrams>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/trigrams/kun.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/trigrams/kun>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/trigrams/zhen.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/trigrams/zhen>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/trigrams/kan.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/trigrams/kan>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/trigrams/dui.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/trigrams/dui>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/trigrams/gen.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/trigrams/gen>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/trigrams/li.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/trigrams/li>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/trigrams/xun.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/trigrams/xun>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/trigrams/qian.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/trigrams/qian>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/methods.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/methods>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/methods/yarrow.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/methods/yarrow>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/methods/three-coin.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/methods/three-coin>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/data.md",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        },
+        {
+          "key": "Link",
+          "value": "<https://thefreeiching.com/data>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/llms.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/llms/:file",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/data/:file.json",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json; charset=utf-8"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/data/:file.csv",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/csv; charset=utf-8"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/api-catalog",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/linkset+json"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/mcp/server-card.json",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json; charset=utf-8"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
     }
   ]
 }

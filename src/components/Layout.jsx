@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/AuthContext';
 import AdSlot from '@/components/ads/AdSlot';
 import { isNativePlatform } from '@/lib/platform';
 import { useSupporter } from '@/lib/SupporterContext';
+import { getPage } from '@/lib/siteContent';
 
 const nav = [
   { path:'/', label:'Dao', icon:Compass },
@@ -24,6 +25,7 @@ export default function Layout() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    document.title = getPage(pathname)?.title || 'The Free I Ching: A Quiet Oracle';
   }, [pathname]);
 
   return (

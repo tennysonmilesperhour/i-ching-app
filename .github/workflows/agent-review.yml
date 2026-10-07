@@ -1,0 +1,39 @@
+name: Agent access weekly export
+
+on:
+  schedule:
+    - cron: '20 16 * * 1' # Mondays 16:20 UTC; the review routine runs at 16:55 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check live agent surface and export traffic summary
+        id: review
+        env:
+          BASE_URL: https://thefreeiching.com
+          AGENT_LOG_SUPABASE_URL: ${{ secrets.AGENT_LOG_SUPABASE_URL }}
+          AGENT_LOG_SERVICE_KEY: ${{ secrets.AGENT_LOG_SERVICE_KEY }}
+        run: node scripts/agent-review.mjs
+      - name: Commit the export
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/agent-review
+          if git diff --cached --quiet; then echo "Nothing to commit"; else
+            git commit -m "Agent access weekly export"
+            git push
+          fi
+      - name: Fail the run if a live check failed
+        if: steps.review.outputs.failed != '0'
+        run: |
+          echo "${{ steps.review.outputs.failed }} live check(s) failed, see the export file."
+          exit 1

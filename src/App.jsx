@@ -17,6 +17,7 @@ import Profile from './pages/Profile';
 import Library from './pages/Library';
 import HexagramGuide from './pages/HexagramGuide';
 import Privacy from './pages/Privacy';
+import StaticPage from './pages/StaticPage';
 import Support from './pages/Support';
 import SupportThanks from './pages/SupportThanks';
 import Supporter from './pages/Supporter';
@@ -55,6 +56,11 @@ const AuthenticatedApp = () => {
         <Route path="/timeline" element={<Timeline />} />
         <Route path="/library" element={<Library />} />
         <Route path="/library/:number" element={<HexagramGuide />} />
+        <Route path="/trigrams" element={<StaticPage />} />
+        <Route path="/trigrams/:slug" element={<StaticPage />} />
+        <Route path="/methods" element={<StaticPage />} />
+        <Route path="/methods/:slug" element={<StaticPage />} />
+        <Route path="/data" element={<StaticPage />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/support" element={<Support />} />
         <Route path="/support/thanks" element={<SupportThanks />} />
