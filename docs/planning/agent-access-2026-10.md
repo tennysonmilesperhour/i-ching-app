@@ -36,7 +36,7 @@ Let AI assistants (ChatGPT, Claude, Perplexity, Gemini), AI crawlers and other a
 
 ## Open items (need Tennyson)
 - Create or choose the Supabase project for the log, run the migration, then set `AGENT_LOG_SUPABASE_URL` and `AGENT_LOG_SERVICE_KEY` in Vercel and as GitHub Actions secrets. Until then bots are not logged and the export says `not_configured`.
-- Privacy page does not mention PostHog analytics (see the review log, first entry).
+- Privacy page analytics paragraph added 2026-10-07 on the PR branch (PostHog, recommended option). Tennyson to review the wording, check that the iOS App Store privacy answers match, and confirm that no PostHog autocapture could include reading text.
 - GitHub only runs `workflow_dispatch` for workflows on the default branch, so the first manual run happens after the PR merges.
 
 ## Weekly review steps (about 45 minutes)

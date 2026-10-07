@@ -15,7 +15,7 @@ export default function Privacy() {
   return (
     <article className="mx-auto max-w-2xl px-6 py-12">
       <h1 className="font-serif text-3xl text-ink/90">Privacy</h1>
-      <p className="mt-2 text-xs tracking-wide text-ink/55">Last updated September 7, 2026</p>
+      <p className="mt-2 text-xs tracking-wide text-ink/55">Last updated October 7, 2026</p>
 
       <div className="mt-10 space-y-8 text-sm leading-7 text-ink/70">
         <section>
@@ -26,6 +26,17 @@ export default function Privacy() {
           </p>
           <p className="mt-2">
             That information remains until you erase it below, clear this site&rsquo;s storage, or remove the app. We do not have a server copy to retrieve, share, or delete on your behalf.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-serif text-xl text-ink/90">Usage analytics</h2>
+          <p className="mt-2">
+            When enabled, The Free I Ching uses PostHog to measure how the app is used, such as which pages are opened and which buttons are tapped.
+            This helps us fix problems and improve the app. We do not send the text of your questions, readings, or journal entries to PostHog, and session recordings are turned off.
+          </p>
+          <p className="mt-2">
+            <a className="underline underline-offset-4 hover:text-ink" href="https://posthog.com/privacy" target="_blank" rel="noreferrer">PostHog privacy policy</a>
           </p>
         </section>
 
