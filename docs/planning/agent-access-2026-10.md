@@ -30,7 +30,7 @@ Let AI assistants (ChatGPT, Claude, Perplexity, Gemini), AI crawlers and other a
 - Agent files: `/llms.txt`, `/llms/hexagrams.txt`, `/llms/judgments.txt`, `/llms/trigrams.txt`, `/llms/methods.txt`, `/llms/faq.txt`, `/sitemap.xml`, `public/robots.txt`, `/.well-known/api-catalog`, `/.well-known/mcp/server-card.json`
 - MCP: `api/mcp.js` at `/mcp`, tools get_hexagram, get_trigram, find_hexagram_by_trigrams, get_line_text, get_cast_statistics, cast_reading
 - Traffic log: `middleware.js`, `supabase/migrations/20261007000000_agent_traffic_log.sql` (`log_agent_hit`, `agent_hits_summary`, `prune_agent_hits`)
-- Weekly review: `.github/workflows/agent-review.yml`, `scripts/agent-review.mjs`, exports in `docs/agent-review/`
+- Weekly review: `.github/workflows/agent-review.yml`, `scripts/agent-review.mjs`, exports in `docs/agent-review/`. Scheduled routine `trig_0176qXZBT6mtL5CGjo8qPJer` (Mondays 16:55 UTC, fresh session each time)
 - Tests: `src/lib/agentAccess.test.js` (derived facts, line text audit, dash ban, file sizes, MCP, bot list, vercel.json sync)
 - Fixes found in the accuracy pass: README told developers to configure a Base44 backend that the code no longer uses (now says no backend is needed).
 
@@ -86,3 +86,4 @@ Follow decisions already recorded in this doc. Do not paywall, charge agents or 
 - Shipped the full agent access layer. Accuracy pass: King Wen table, trigram mapping, image text and all 384 line text headers (nine or six, place) checked against yin and yang with no errors. README referenced a Base44 backend that no longer exists in code, fixed.
 - Found, not changed: the Privacy page (last updated September 7, 2026) says nothing about PostHog analytics, which was added October 6, 2026 (`src/lib/posthog.js`, active when `VITE_POSTHOG_KEY` is set). Needs a decision from Tennyson.
 - Traffic log not yet connected, so no bot data exists. First real data arrives after the Supabase step above.
+- Verified on the Vercel preview of the PR branch: prerendered `/library/24` HTML with JSON-LD, `/library/24.md` served as text/markdown with the canonical Link header, `/mcp` GET description from the serverless function. The export script passed 8 of 8 live checks against a local copy of the build. The first real run of the export Action waits for the PR to merge (GitHub only dispatches workflows on the default branch).
