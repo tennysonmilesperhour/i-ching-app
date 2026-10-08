@@ -40,7 +40,11 @@ export function publicPaths() {
   return ['/', '/library', ...hexagrams, ...extra];
 }
 
+const EXTRA_PATH = /^\/(trigrams(\/[a-z]+)?|methods(\/[a-z-]+)?|data)$/;
+
 function extraPage(path) {
+  // Cheap check first so ordinary app routes never build the content pages.
+  if (!EXTRA_PATH.test(path)) return null;
   const found = allPages().find((p) => p.path === path && p.kind !== 'hexagram' && p.path !== '/' && p.path !== '/library');
   return found
     ? page({ path, title: found.title, description: found.description, canonical: `${SITE_ORIGIN}${path}` })
