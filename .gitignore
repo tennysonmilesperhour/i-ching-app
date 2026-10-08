@@ -7,7 +7,6 @@ dist/
 .node_modules-duplicate-codex/
 .package-lock-stale-codex
 .public-stale-codex/
-package-lock.json
 .env
 .env.local
 .env.*.local
