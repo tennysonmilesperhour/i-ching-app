@@ -5,46 +5,75 @@
   "checks": [
     {
       "name": "robots.txt has Content-Signal and sitemap",
-      "ok": false,
-      "detail": "missing Content-Signal or Sitemap"
+      "ok": true,
+      "detail": null
     },
     {
       "name": "llms.txt under 10 KB with topic links",
-      "ok": false,
-      "detail": "status 404"
+      "ok": true,
+      "detail": {
+        "bytes": 3404
+      }
     },
     {
       "name": "topic files each under 60 KB",
-      "ok": false,
-      "detail": "few topic links"
+      "ok": true,
+      "detail": {
+        "https://thefreeiching.com/llms/hexagrams.txt": 7599,
+        "https://thefreeiching.com/llms/judgments.txt": 21707,
+        "https://thefreeiching.com/llms/trigrams.txt": 1362,
+        "https://thefreeiching.com/llms/methods.txt": 1140,
+        "https://thefreeiching.com/llms/faq.txt": 1458
+      }
     },
     {
       "name": "data catalog and every data file load",
-      "ok": false,
-      "detail": "Unexpected token '<', \"<!doctype \"... is not valid JSON"
+      "ok": true,
+      "detail": {
+        "/data/hexagrams.json": 44098,
+        "/data/hexagrams.csv": 23209,
+        "/data/trigrams.json": 2716,
+        "/data/trigrams.csv": 811,
+        "/data/line-changes.json": 65080,
+        "/data/line-changes.csv": 12753,
+        "/data/cast-probabilities.json": 8217,
+        "/data/hexagram-lines.json": 89299,
+        "/data/hexagram-lines.csv": 54269
+      }
     },
     {
       "name": "prerendered hexagram page has real HTML and markdown twin",
-      "ok": false,
-      "detail": "static HTML missing content, JSON-LD or alternate link"
+      "ok": true,
+      "detail": null
     },
     {
       "name": "sitemap lists the content pages",
-      "ok": false,
-      "detail": "only 66 urls"
+      "ok": true,
+      "detail": {
+        "urls": 79
+      }
     },
     {
       "name": "well-known files",
-      "ok": false,
-      "detail": "api-catalog missing"
+      "ok": true,
+      "detail": null
     },
     {
       "name": "MCP server answers initialize, tools/list and a tool call",
-      "ok": false,
-      "detail": "Unexpected token '<', \"<!doctype \"... is not valid JSON"
+      "ok": true,
+      "detail": {
+        "tools": [
+          "get_hexagram",
+          "get_trigram",
+          "find_hexagram_by_trigrams",
+          "get_line_text",
+          "get_cast_statistics",
+          "cast_reading"
+        ]
+      }
     }
   ],
-  "failed_checks": 8,
+  "failed_checks": 0,
   "traffic": {
     "status": "not_configured",
     "note": "Set AGENT_LOG_SUPABASE_URL and AGENT_LOG_SERVICE_KEY to enable the traffic summary and pruning."
