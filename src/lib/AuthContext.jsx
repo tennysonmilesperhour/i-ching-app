@@ -1,21 +1,17 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { authClient } from '@/api/authClient';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  // Session lives in localStorage, so the first paint can render real content
+  // for prerender and for guests. getSession no-ops when storage is missing.
+  const [user, setUser] = useState(() => authClient.getSession()?.user ?? null);
+  const [isLoadingAuth] = useState(false);
   const [isLoadingPublicSettings] = useState(false);
   const [authError, setAuthError] = useState(null);
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    const session = authClient.getSession();
-    if (session) setUser(session.user);
-    setIsLoadingAuth(false);
-  }, []);
 
   const invalidateReadings = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: ['readings'] });

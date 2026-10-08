@@ -22,7 +22,20 @@ import SupportThanks from './pages/SupportThanks';
 import Supporter from './pages/Supporter';
 import { SupporterProvider } from '@/lib/SupporterContext';
 
-const AuthenticatedApp = () => {
+export function AppProviders({ children }) {
+  return (
+    <QueryClientProvider client={queryClientInstance}>
+      <SupporterProvider>
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
+      </SupporterProvider>
+    </QueryClientProvider>
+  );
+}
+
+export const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
   // Show loading spinner while checking app public settings or auth
@@ -70,19 +83,13 @@ const AuthenticatedApp = () => {
 
 
 function App() {
-
   return (
-    <QueryClientProvider client={queryClientInstance}>
-      <SupporterProvider>
-        <AuthProvider>
-          <Router>
-            <AuthenticatedApp />
-          </Router>
-          <Toaster />
-        </AuthProvider>
-      </SupporterProvider>
-    </QueryClientProvider>
-  )
+    <AppProviders>
+      <Router>
+        <AuthenticatedApp />
+      </Router>
+    </AppProviders>
+  );
 }
 
 export default App

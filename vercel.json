@@ -1,9 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "trailingSlash": false,
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/reading/:id", "destination": "/spa.html" },
+    { "source": "/journal", "destination": "/spa.html" },
+    { "source": "/timeline", "destination": "/spa.html" },
+    { "source": "/privacy", "destination": "/spa.html" },
+    { "source": "/support", "destination": "/spa.html" },
+    { "source": "/support/thanks", "destination": "/spa.html" },
+    { "source": "/supporter", "destination": "/spa.html" },
+    { "source": "/login", "destination": "/spa.html" },
+    { "source": "/signup", "destination": "/spa.html" },
+    { "source": "/profile", "destination": "/spa.html" }
   ]
 }

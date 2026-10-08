@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { BookMarked, BookOpen, Clock, Compass, User, LogIn, Sparkles } from 'lucide-react';
 import { useAuth } from '@/lib/AuthContext';
 import AdSlot from '@/components/ads/AdSlot';
 import { isNativePlatform } from '@/lib/platform';
 import { useSupporter } from '@/lib/SupporterContext';
+import { applyDocumentMeta } from '@/lib/seo';
 
 const nav = [
   { path:'/', label:'Dao', icon:Compass },
@@ -18,13 +19,21 @@ export default function Layout() {
   const { isAuthenticated, user } = useAuth();
   const native = isNativePlatform();
   const { entitled, activeBackground } = useSupporter();
+  const [accountReady, setAccountReady] = useState(false);
   const navigation = native
     ? [...nav, { path: '/supporter', label: entitled ? 'Supporter' : 'Upgrade', icon: Sparkles }]
     : nav;
 
   useEffect(() => {
+    setAccountReady(true);
+  }, []);
+
+  useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    applyDocumentMeta(pathname);
   }, [pathname]);
+
+  const signedIn = accountReady && isAuthenticated;
 
   return (
     <div className={`min-h-screen text-ink ${activeBackground === 'water' ? 'supporter-water-shell' : 'bg-parchment'}`}>
@@ -54,7 +63,7 @@ export default function Layout() {
                 </Link>
               );
             })}
-            {!native && (isAuthenticated ? (
+            {!native && (signedIn ? (
               <Link
                 to="/profile"
                 aria-label="Profile"
@@ -92,6 +101,11 @@ export default function Layout() {
           <Link to="/support" className="underline underline-offset-4 hover:text-ink">Support</Link>
           <Link to="/privacy" className="underline underline-offset-4 hover:text-ink">Privacy</Link>
         </div>
+        <p className="mt-4">
+          <a href="https://tennysontaggart.com" className="text-xs text-ink/40 underline underline-offset-4 hover:text-ink/70">
+            by Tennyson Taggart
+          </a>
+        </p>
       </footer>
     </div>
   );

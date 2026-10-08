@@ -1,4 +1,5 @@
 node_modules/
+.prerender/
 dist/
 .dist-stale-codex/
 .dist-attempt-codex/
