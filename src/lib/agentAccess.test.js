@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import classicalLines from '../data/classicalLines.json' with { type: 'json' };
 import { classifyAgent } from './agentBots.js';
-import { buildCatalog, buildDataFiles, buildLlmsFiles, buildSitemap } from './agentData.js';
+import { buildCatalog, buildDataFiles, buildLlmsFiles } from './agentData.js';
 import { handlePost } from './mcpServer.js';
 import {
   ALL_HEXAGRAMS, allPages, castStatistics, describeCast, findHexagram, getPage, hexagramFromTrigrams, renderBodyHtml, renderMarkdown,
@@ -80,7 +80,6 @@ test('pages, markdown twins and data stay consistent and dash free', () => {
   assert.equal(data['hexagram-lines.json'].rows.length, 384);
   assert.equal(data['line-changes.json'].rows.length, 384);
   assert.equal(buildCatalog().datasets.length, 5);
-  assert.equal((buildSitemap().match(/<loc>/g) || []).length, 79);
 });
 
 test('llms files are small enough to read whole', () => {

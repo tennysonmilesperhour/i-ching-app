@@ -66,3 +66,12 @@ the repository.
 
 App support and privacy inquiries use `morphiclabsdata@gmail.com` and the public
 support page at `https://thefreeiching.com/support`.
+
+## Baseline checklist
+
+[ ] private repo + main protected + CI   [x] dependabot + lockfile
+[ ] advisors clean (or exceptions noted)  [ ] backups/PITR confirmed
+[x] PostHog + exceptions on               [ ] uptime incl. checkout URL
+[ ] privacy / terms / contact (+refund/shipping/disclaimers if selling)
+[ ] support@ email works                  [ ] domain auto-renew on
+[ ] revenue lands in business account     [ ] sales tax configured (physical goods)

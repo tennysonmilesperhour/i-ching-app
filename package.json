@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/build-agent-files.mjs",
+    "build": "vite build && node scripts/prerender.mjs && node scripts/build-agent-files.mjs",
     "native:sync": "SKIP_AGENT_FILES=1 npm run build && cap sync ios",
     "native:open": "cap open ios",
     "preview": "vite preview",

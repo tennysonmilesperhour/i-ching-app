@@ -31,7 +31,9 @@ export function SupporterProvider({ children }) {
   const [native] = useState(() => isNativePlatform());
   const [status, setStatus] = useState(() => preview ? PREVIEW_STATUS : EMPTY_STATUS);
   const [loading, setLoading] = useState(native && !preview);
-  const [background, setBackgroundState] = useState(readSupporterBackground);
+  // First paint stays on parchment so prerendered HTML can hydrate. The saved
+  // background is applied after mount.
+  const [background, setBackgroundState] = useState('parchment');
 
   const refresh = useCallback(async () => {
     if (preview) return PREVIEW_STATUS;
@@ -46,6 +48,10 @@ export function SupporterProvider({ children }) {
       setLoading(false);
     }
   }, [native, preview]);
+
+  useEffect(() => {
+    setBackgroundState(readSupporterBackground());
+  }, []);
 
   useEffect(() => {
     if (!native || preview) return undefined;

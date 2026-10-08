@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PageNotFound from '@/lib/PageNotFound';
 import { getPage, renderBodyHtml } from '@/lib/siteContent';
@@ -11,10 +10,6 @@ export default function StaticPage() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const page = getPage(pathname);
-
-  useEffect(() => {
-    if (page) document.title = page.title;
-  }, [page]);
 
   if (!page) return <PageNotFound />;
 

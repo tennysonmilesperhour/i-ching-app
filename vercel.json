@@ -1,16 +1,80 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "trailingSlash": false,
   "rewrites": [
     {
       "source": "/mcp",
       "destination": "/api/mcp"
     },
     {
-      "source": "/((?!api/|llms/|data/|\\.well-known/).*)",
-      "destination": "/app.html"
+      "source": "/reading/:id",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/journal",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/timeline",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/support/thanks",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/supporter",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/signup",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/profile",
+      "destination": "/spa.html"
     }
   ],
   "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    },
     {
       "source": "/index.md",
       "headers": [

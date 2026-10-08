@@ -9,7 +9,6 @@ import {
   REFLECTION_NOTICE,
   SITE_NAME,
   SITE_URL,
-  allPages,
   castStatistics,
 } from './siteContent.js';
 
@@ -247,11 +246,6 @@ Updated ${CONTENT_UPDATED}.
     'llms/methods.txt': methods,
     'llms/faq.txt': faq,
   };
-}
-
-export function buildSitemap() {
-  const urls = allPages().map((p) => `  <url><loc>${SITE_URL}${p.path === '/' ? '/' : p.path}</loc><lastmod>${CONTENT_UPDATED}</lastmod></url>`);
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
 }
 
 export function mdPath(pagePath) {

@@ -32,7 +32,7 @@ export default function Privacy() {
         <section>
           <h2 className="font-serif text-xl text-ink/90">Usage analytics</h2>
           <p className="mt-2">
-            When enabled, The Free I Ching uses PostHog to measure how the app is used, such as which pages are opened and which buttons are tapped.
+            When enabled, The Free I Ching uses PostHog to measure how the app is used, such as which pages are opened and which buttons are tapped, and to catch technical errors.
             This helps us fix problems and improve the app. We do not send the text of your questions, readings, or journal entries to PostHog, and session recordings are turned off.
           </p>
           <p className="mt-2">
@@ -57,6 +57,12 @@ export default function Privacy() {
             <p className="mt-2">
               If you choose to contribute, Stripe processes your email address, payment details, and subscription under its own privacy policy.
               The app receives no card details. The web version may also display Google AdSense when advertising is configured; Google may process device and usage information under its own policies.
+            </p>
+            <p className="mt-2">
+              With your permission, Google Analytics uses cookies to measure visits to public web pages, scrolling, and outbound link destinations.
+              We do not send questions, readings, journal entries, form contents, account activity, or URL query strings to Google Analytics.
+              Use Analytics choices to change your preference at any time. Browser privacy signals keep this optional tracking off.
+              This tracking is not enabled in the native app.
             </p>
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
               <a className="underline underline-offset-4 hover:text-ink" href="https://stripe.com/privacy" target="_blank" rel="noreferrer">

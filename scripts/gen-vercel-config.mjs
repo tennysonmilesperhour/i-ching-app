@@ -1,4 +1,6 @@
-// Generates vercel.json (headers need one entry per markdown twin so each can
+// Generates vercel.json. The security headers, build settings and SPA rewrites
+// come from the repo baseline; this script adds /mcp and the agent file
+// headers (headers need one entry per markdown twin so each can
 // carry its own canonical Link header). Run `npm run gen:vercel` after changes.
 import fs from 'node:fs';
 import { SITE_URL, allPages } from '../src/lib/siteContent.js';
@@ -8,11 +10,25 @@ export function buildVercelConfig() {
   const cors = { key: 'Access-Control-Allow-Origin', value: '*' };
   return {
     $schema: 'https://openapi.vercel.sh/vercel.json',
+    buildCommand: 'npm run build',
+    outputDirectory: 'dist',
+    trailingSlash: false,
     rewrites: [
       { source: '/mcp', destination: '/api/mcp' },
-      { source: '/((?!api/|llms/|data/|\\.well-known/).*)', destination: '/app.html' },
+      ...['/reading/:id', '/journal', '/timeline', '/privacy', '/support', '/support/thanks', '/supporter', '/login', '/signup', '/profile']
+        .map((source) => ({ source, destination: '/spa.html' })),
     ],
     headers: [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=()' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        ],
+      },
       ...allPages().map((p) => ({
         source: mdPath(p.path),
         headers: [
