@@ -1,4 +1,16 @@
+# AI assistants and agents: start at https://thefreeiching.com/llms.txt
+# Open data (JSON, CSV, CC BY 4.0): https://thefreeiching.com/data
+# Read-only MCP server (no key): https://thefreeiching.com/mcp
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
+Disallow: /reading/
+Disallow: /journal
+Disallow: /timeline
+Disallow: /profile
+Disallow: /login
+Disallow: /signup
+Disallow: /supporter
+Disallow: /support/thanks
 
 Sitemap: https://thefreeiching.com/sitemap.xml

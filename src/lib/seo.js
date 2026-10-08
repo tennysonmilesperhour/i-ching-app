@@ -1,5 +1,6 @@
 import { HEXAGRAM_NAMES } from './hexagramData.js';
 import { HEXAGRAM_INTERPRETATIONS } from './hexagramInterpretations.js';
+import { allPages } from './siteContent.js';
 
 export const SITE_ORIGIN = 'https://thefreeiching.com';
 export const OG_IMAGE = `${SITE_ORIGIN}/og-image.png`;
@@ -35,7 +36,15 @@ function truncate(text, max = 170) {
 
 export function publicPaths() {
   const hexagrams = Array.from({ length: 64 }, (_, index) => `/library/${index + 1}`);
-  return ['/', '/library', ...hexagrams];
+  const extra = allPages().filter((p) => p.kind !== 'hexagram' && p.path !== '/' && p.path !== '/library').map((p) => p.path);
+  return ['/', '/library', ...hexagrams, ...extra];
+}
+
+function extraPage(path) {
+  const found = allPages().find((p) => p.path === path && p.kind !== 'hexagram' && p.path !== '/' && p.path !== '/library');
+  return found
+    ? page({ path, title: found.title, description: found.description, canonical: `${SITE_ORIGIN}${path}` })
+    : null;
 }
 
 export function seoForPath(pathname) {
@@ -74,6 +83,9 @@ export function seoForPath(pathname) {
       });
     }
   }
+
+  const extra = extraPage(path);
+  if (extra) return extra;
 
   const appTitle = APP_TITLES[path] || (path.startsWith('/reading/') ? 'Reading' : null);
   if (appTitle) {

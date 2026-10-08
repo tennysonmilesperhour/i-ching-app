@@ -5,12 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender.mjs",
-    "native:sync": "npm run build && cap sync ios",
+    "build": "vite build && node scripts/prerender.mjs && node scripts/build-agent-files.mjs",
+    "native:sync": "SKIP_AGENT_FILES=1 npm run build && cap sync ios",
     "native:open": "cap open ios",
     "preview": "vite preview",
     "lint": "eslint src",
-    "test": "node --test src/lib/*.test.js"
+    "test": "node --test src/lib/*.test.js",
+    "gen:vercel": "node scripts/gen-vercel-config.mjs",
+    "agent:review": "node scripts/agent-review.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.1",
@@ -35,6 +37,7 @@
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.0",
     "@tanstack/react-query": "^5.0.0",
+    "@vercel/functions": "^3.9.11",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.400.0",

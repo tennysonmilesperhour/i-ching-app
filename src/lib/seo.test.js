@@ -4,10 +4,11 @@ import { publicPaths, seoForPath, sitemapXml } from './seo.js';
 
 test('public paths cover the homepage, library, and every hexagram', () => {
   const paths = publicPaths();
-  assert.equal(paths.length, 66);
+  assert.equal(paths.length, 79);
   assert.equal(paths[0], '/');
   assert.equal(paths[1], '/library');
-  assert.equal(paths.at(-1), '/library/64');
+  assert.equal(paths[65], '/library/64');
+  assert.ok(paths.includes('/trigrams/kun') && paths.includes('/methods/yarrow') && paths.includes('/data'));
   assert.ok(paths.includes('/library/1'));
 });
 
@@ -28,7 +29,7 @@ test('unknown paths are not indexable', () => {
 
 test('sitemap lists every public hexagram url', () => {
   const xml = sitemapXml();
-  assert.equal(xml.match(/<loc>/g).length, 66);
+  assert.equal(xml.match(/<loc>/g).length, 79);
   assert.match(xml, /https:\/\/thefreeiching\.com\/library\/64/);
   assert.match(xml, /https:\/\/thefreeiching\.com\/</);
 });

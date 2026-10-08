@@ -30,6 +30,17 @@ export default function Privacy() {
         </section>
 
         <section>
+          <h2 className="font-serif text-xl text-ink/90">Usage analytics</h2>
+          <p className="mt-2">
+            When enabled, The Free I Ching uses PostHog to measure how the app is used, such as which pages are opened and which buttons are tapped, and to catch technical errors.
+            This helps us fix problems and improve the app. We do not send the text of your questions, readings, or journal entries to PostHog, and session recordings are turned off.
+          </p>
+          <p className="mt-2">
+            <a className="underline underline-offset-4 hover:text-ink" href="https://posthog.com/privacy" target="_blank" rel="noreferrer">PostHog privacy policy</a>
+          </p>
+        </section>
+
+        <section>
           <h2 className="font-serif text-xl text-ink/90">Native app</h2>
           <p className="mt-2">
             The iPhone and iPad app stores its journal on the device. It does not display advertising or open the web donation checkout.
