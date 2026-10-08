@@ -15,7 +15,7 @@ export default function Privacy() {
   return (
     <article className="mx-auto max-w-2xl px-6 py-12">
       <h1 className="font-serif text-3xl text-ink/90">Privacy</h1>
-      <p className="mt-2 text-xs tracking-wide text-ink/55">Last updated September 7, 2026</p>
+      <p className="mt-2 text-xs tracking-wide text-ink/55">Last updated October 7, 2026</p>
 
       <div className="mt-10 space-y-8 text-sm leading-7 text-ink/70">
         <section>
@@ -46,6 +46,12 @@ export default function Privacy() {
             <p className="mt-2">
               If you choose to contribute, Stripe processes your email address, payment details, and subscription under its own privacy policy.
               The app receives no card details. The web version may also display Google AdSense when advertising is configured; Google may process device and usage information under its own policies.
+            </p>
+            <p className="mt-2">
+              With your permission, Google Analytics uses cookies to measure visits to public web pages, scrolling, and outbound link destinations.
+              We do not send questions, readings, journal entries, form contents, account activity, or URL query strings to Google Analytics.
+              Use Analytics choices to change your preference at any time. Browser privacy signals keep this optional tracking off.
+              This tracking is not enabled in the native app.
             </p>
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
               <a className="underline underline-offset-4 hover:text-ink" href="https://stripe.com/privacy" target="_blank" rel="noreferrer">
