@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "native:sync": "npm run build && cap sync ios",
     "native:open": "cap open ios",
     "preview": "vite preview",
