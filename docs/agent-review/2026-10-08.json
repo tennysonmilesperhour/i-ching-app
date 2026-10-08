@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-08",
+  "base_url": "https://thefreeiching.com",
+  "days": 7,
+  "checks": [
+    {
+      "name": "robots.txt has Content-Signal and sitemap",
+      "ok": false,
+      "detail": "missing Content-Signal or Sitemap"
+    },
+    {
+      "name": "llms.txt under 10 KB with topic links",
+      "ok": false,
+      "detail": "status 404"
+    },
+    {
+      "name": "topic files each under 60 KB",
+      "ok": false,
+      "detail": "few topic links"
+    },
+    {
+      "name": "data catalog and every data file load",
+      "ok": false,
+      "detail": "Unexpected token '<', \"<!doctype \"... is not valid JSON"
+    },
+    {
+      "name": "prerendered hexagram page has real HTML and markdown twin",
+      "ok": false,
+      "detail": "static HTML missing content, JSON-LD or alternate link"
+    },
+    {
+      "name": "sitemap lists the content pages",
+      "ok": false,
+      "detail": "only 66 urls"
+    },
+    {
+      "name": "well-known files",
+      "ok": false,
+      "detail": "api-catalog missing"
+    },
+    {
+      "name": "MCP server answers initialize, tools/list and a tool call",
+      "ok": false,
+      "detail": "Unexpected token '<', \"<!doctype \"... is not valid JSON"
+    }
+  ],
+  "failed_checks": 8,
+  "traffic": {
+    "status": "not_configured",
+    "note": "Set AGENT_LOG_SUPABASE_URL and AGENT_LOG_SERVICE_KEY to enable the traffic summary and pruning."
+  }
+}
