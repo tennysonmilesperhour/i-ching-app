@@ -5,11 +5,12 @@ on:
     - cron: '20 16 * * 1' # Mondays 16:20 UTC; the review routine runs at 16:55 UTC
   workflow_dispatch:
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   export:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
