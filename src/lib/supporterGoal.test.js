@@ -14,7 +14,10 @@ test('progress is a clamped percentage', () => {
 
 test('parses only non-negative whole counts', () => {
   assert.equal(parseSupporterCount('7'), 7);
-  assert.equal(parseSupporterCount(''), 0);
+  assert.equal(parseSupporterCount('0'), 0);
+  assert.equal(parseSupporterCount(0), 0);
+  assert.equal(parseSupporterCount(null), null);
+  assert.equal(parseSupporterCount(''), null);
   assert.equal(parseSupporterCount('-1'), null);
   assert.equal(parseSupporterCount('abc'), null);
   assert.equal(parseSupporterCount(undefined), null);
@@ -40,4 +43,9 @@ test('counts active subscriptions across pages', async () => {
 test('throws when Stripe errors', async () => {
   const fetchImpl = async () => ({ ok: false, status: 401 });
   await assert.rejects(countStripeSupporters({ secretKey: 'bad', fetchImpl }));
+});
+
+test('refuses to count without a price id', async () => {
+  const fetchImpl = async () => { throw new Error('should not be called'); };
+  await assert.rejects(countStripeSupporters({ secretKey: 'rk_test', fetchImpl }), /price id/);
 });
