@@ -15,7 +15,7 @@ export default function Privacy() {
   return (
     <article className="mx-auto max-w-2xl px-6 py-12">
       <h1 className="font-serif text-3xl text-ink/90">Privacy</h1>
-      <p className="mt-2 text-xs tracking-wide text-ink/55">Last updated October 7, 2026</p>
+      <p className="mt-2 text-xs tracking-wide text-ink/55">Last updated October 31, 2026</p>
 
       <div className="mt-10 space-y-8 text-sm leading-7 text-ink/70">
         <section>
@@ -30,10 +30,13 @@ export default function Privacy() {
         </section>
 
         <section>
-          <h2 className="font-serif text-xl text-ink/90">Usage analytics</h2>
+          <h2 className="font-serif text-xl text-ink/90">Usage analytics (website only)</h2>
           <p className="mt-2">
-            When enabled, The Free I Ching uses PostHog to measure how the app is used, such as which pages are opened and which buttons are tapped, and to catch technical errors.
-            This helps us fix problems and improve the app. We do not send the text of your questions, readings, or journal entries to PostHog, and session recordings are turned off.
+            On the website, when enabled, The Free I Ching uses PostHog to measure how the site is used, such as which pages are opened and which buttons are tapped, and to catch technical errors.
+            This helps us fix problems and improve the site. We do not send the text of your questions, readings, or journal entries to PostHog, and session recordings are turned off.
+          </p>
+          <p className="mt-2">
+            The iPhone and iPad app does not include PostHog or any other analytics. The analytics code is left out when the app is built, and the app also checks that it is running natively before any analytics could start.
           </p>
           <p className="mt-2">
             <a className="underline underline-offset-4 hover:text-ink" href="https://posthog.com/privacy" target="_blank" rel="noreferrer">PostHog privacy policy</a>
@@ -43,7 +46,7 @@ export default function Privacy() {
         <section>
           <h2 className="font-serif text-xl text-ink/90">Native app</h2>
           <p className="mt-2">
-            The iPhone and iPad app stores its journal on the device. It does not display advertising or open the web donation checkout.
+            The iPhone and iPad app stores its journal on the device. It does not display advertising, include analytics or tracking, or open the web donation checkout.
             Removing the app also removes its locally stored data unless your device backup preserves it.
           </p>
           <p className="mt-2">

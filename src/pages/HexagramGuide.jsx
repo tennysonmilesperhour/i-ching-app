@@ -1,7 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
 import classicalLines from '@/data/classicalLines.json';
 import HexagramVisual from '@/components/HexagramVisual';
-import { HEXAGRAM_CHINESE, HEXAGRAM_NAMES, getLinesForHexagram, getTrigrams } from '@/lib/hexagramData';
+import { HEXAGRAM_CHINESE, HEXAGRAM_NAMES, HEXAGRAM_PINYIN, getLinesForHexagram, getTrigrams } from '@/lib/hexagramData';
+import { hexagramRecord } from '@/lib/siteContent';
 import { HEXAGRAM_INTERPRETATIONS } from '@/lib/hexagramInterpretations';
 
 export default function HexagramGuide() {
@@ -22,6 +23,12 @@ export default function HexagramGuide() {
   const interpretation = HEXAGRAM_INTERPRETATIONS[number];
   const trigrams = getTrigrams(lines);
   const lineTexts = classicalLines[String(number)] || [];
+  const record = hexagramRecord(number);
+  const related = [
+    ['Nuclear', 'lines 2 to 5', record.nuclear_hexagram],
+    ['Inverse', 'turned upside down', record.inverse_hexagram],
+    ['Opposite', 'every line changed', record.opposite_hexagram],
+  ];
 
   return (
     <article className="mx-auto max-w-2xl px-6 py-12">
@@ -32,6 +39,7 @@ export default function HexagramGuide() {
         <p className="mt-8 text-xs tracking-[0.2em] uppercase text-ink/55">Hexagram {number}</p>
         <h1 className="mt-2 font-serif text-4xl text-ink/90">{name}</h1>
         <p className="mt-2 font-serif text-3xl text-ink/65" lang="zh-Hant">{HEXAGRAM_CHINESE[number]}</p>
+        <p className="mt-1 font-serif text-base italic text-ink/55" lang="zh-Latn-pinyin">{HEXAGRAM_PINYIN[number]}</p>
       </header>
 
       <div className="mt-12 grid grid-cols-2 gap-4 border-y border-stone/25 py-6 text-center">
@@ -72,6 +80,25 @@ export default function HexagramGuide() {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section className="border-t border-stone/25 pt-8">
+          <h2 className="text-xs tracking-widest uppercase text-ink/55">Related hexagrams</h2>
+          <ul className="mt-4 space-y-2 text-sm text-ink/75">
+            {related.map(([label, how, target]) => (
+              <li key={label}>
+                <span className="text-ink/55">{label} ({how}): </span>
+                {target === number ? 'itself' : (
+                  <Link to={`/library/${target}`} className="underline underline-offset-4 hover:text-ink">
+                    {target}. {HEXAGRAM_NAMES[target]}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-xs text-ink/55">
+            <Link to="/related-hexagrams" className="underline underline-offset-4 hover:text-ink">What these relationships mean</Link>
+          </p>
         </section>
 
         <p className="border-t border-stone/25 pt-6 text-xs leading-relaxed text-ink/55">

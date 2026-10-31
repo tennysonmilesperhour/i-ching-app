@@ -6,13 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/prerender.mjs && node scripts/build-agent-files.mjs",
-    "native:sync": "SKIP_AGENT_FILES=1 npm run build && cap sync ios",
+    "native:build": "VITE_NATIVE_BUILD=1 SKIP_AGENT_FILES=1 npm run build && node scripts/check-native-bundle.mjs",
+    "native:sync": "npm run native:build && cap sync ios",
     "native:open": "cap open ios",
     "preview": "vite preview",
     "lint": "eslint src",
     "test": "node --test src/lib/*.test.js",
     "gen:vercel": "node scripts/gen-vercel-config.mjs",
-    "agent:review": "node scripts/agent-review.mjs"
+    "agent:review": "node scripts/agent-review.mjs",
+    "capacitor:copy:before": "node scripts/check-native-bundle.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.1",

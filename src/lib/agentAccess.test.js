@@ -66,7 +66,7 @@ test('describeCast finds changing lines and the relating hexagram', () => {
 
 test('pages, markdown twins and data stay consistent and dash free', () => {
   const pages = allPages();
-  assert.equal(pages.length, 79);
+  assert.equal(pages.length, 82);
   for (const p of pages) {
     assert.ok(p.title && p.description && p.jsonld.length, p.path);
     assert.ok(!DASH.test(renderBodyHtml(p)), `dash in html ${p.path}`);

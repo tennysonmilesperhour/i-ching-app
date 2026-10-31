@@ -60,6 +60,10 @@ npm run native:sync
 npm run native:open
 ```
 
+`native:sync` builds with `VITE_NATIVE_BUILD=1`, which leaves PostHog analytics out of the
+app, and refuses to copy a bundle that still contains it (the app is declared
+as collecting no data). Always use it instead of `npm run build && npx cap sync`.
+
 Select an Apple development team in Xcode before signing or archiving. The app
 icon, splash assets, privacy route, metadata, and review notes are included in
 the repository.

@@ -170,6 +170,20 @@ export const HEXAGRAM_CHINESE = {
   57: "巽", 58: "兌", 59: "渙", 60: "節", 61: "中孚", 62: "小過", 63: "既濟", 64: "未濟",
 };
 
+// Hanyu Pinyin with tone marks for the names above, one syllable per
+// character. Readings follow the standard ones used for the hexagram names
+// (for example 屯 zhūn, 否 pǐ, 賁 bì, 解 xiè, 畜 chù), not the everyday ones.
+export const HEXAGRAM_PINYIN = {
+  1: "qián", 2: "kūn", 3: "zhūn", 4: "méng", 5: "xū", 6: "sòng", 7: "shī", 8: "bǐ",
+  9: "xiǎo chù", 10: "lǚ", 11: "tài", 12: "pǐ", 13: "tóng rén", 14: "dà yǒu", 15: "qiān", 16: "yù",
+  17: "suí", 18: "gǔ", 19: "lín", 20: "guān", 21: "shì kè", 22: "bì", 23: "bō", 24: "fù",
+  25: "wú wàng", 26: "dà chù", 27: "yí", 28: "dà guò", 29: "kǎn", 30: "lí", 31: "xián", 32: "héng",
+  33: "dùn", 34: "dà zhuàng", 35: "jìn", 36: "míng yí", 37: "jiā rén", 38: "kuí", 39: "jiǎn", 40: "xiè",
+  41: "sǔn", 42: "yì", 43: "guài", 44: "gòu", 45: "cuì", 46: "shēng", 47: "kùn", 48: "jǐng",
+  49: "gé", 50: "dǐng", 51: "zhèn", 52: "gèn", 53: "jiàn", 54: "guī mèi", 55: "fēng", 56: "lǚ",
+  57: "xùn", 58: "duì", 59: "huàn", 60: "jié", 61: "zhōng fú", 62: "xiǎo guò", 63: "jì jì", 64: "wèi jì",
+};
+
 function secureRandomInt(maxExclusive) {
   const cryptoApi = globalThis.crypto;
   if (!cryptoApi?.getRandomValues) {

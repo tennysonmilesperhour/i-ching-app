@@ -8,6 +8,7 @@ import classicalLines from '../data/classicalLines.json' with { type: 'json' };
 import {
   HEXAGRAM_CHINESE,
   HEXAGRAM_NAMES,
+  HEXAGRAM_PINYIN,
   TRIGRAMS,
   getLinesForHexagram,
   getTrigrams,
@@ -18,20 +19,20 @@ import { HEXAGRAM_INTERPRETATIONS } from './hexagramInterpretations.js';
 
 export const SITE_URL = 'https://thefreeiching.com';
 export const SITE_NAME = 'The Free I Ching';
-export const CONTENT_UPDATED = '2026-10-07';
+export const CONTENT_UPDATED = '2026-10-31';
 export const LICENSE_URL = 'https://creativecommons.org/licenses/by/4.0/';
 export const REFLECTION_NOTICE = 'The I Ching is a tool for reflection, not a prediction. Nothing here forecasts events or replaces professional advice.';
 export const LINES_SOURCE_URL = 'https://github.com/jesshewitt/i-ching';
 
 const TRIGRAM_META = [
-  { slug: 'kun', family: 'Mother', lines: '000', image: 'Earth' },
-  { slug: 'zhen', family: 'Eldest son', lines: '100', image: 'Thunder' },
-  { slug: 'kan', family: 'Middle son', lines: '010', image: 'Water' },
-  { slug: 'dui', family: 'Youngest daughter', lines: '110', image: 'Lake' },
-  { slug: 'gen', family: 'Youngest son', lines: '001', image: 'Mountain' },
-  { slug: 'li', family: 'Middle daughter', lines: '101', image: 'Fire' },
-  { slug: 'xun', family: 'Eldest daughter', lines: '011', image: 'Wind' },
-  { slug: 'qian', family: 'Father', lines: '111', image: 'Heaven' },
+  { slug: 'kun', pinyin: 'kūn', family: 'Mother', lines: '000', image: 'Earth' },
+  { slug: 'zhen', pinyin: 'zhèn', family: 'Eldest son', lines: '100', image: 'Thunder' },
+  { slug: 'kan', pinyin: 'kǎn', family: 'Middle son', lines: '010', image: 'Water' },
+  { slug: 'dui', pinyin: 'duì', family: 'Youngest daughter', lines: '110', image: 'Lake' },
+  { slug: 'gen', pinyin: 'gèn', family: 'Youngest son', lines: '001', image: 'Mountain' },
+  { slug: 'li', pinyin: 'lí', family: 'Middle daughter', lines: '101', image: 'Fire' },
+  { slug: 'xun', pinyin: 'xùn', family: 'Eldest daughter', lines: '011', image: 'Wind' },
+  { slug: 'qian', pinyin: 'qián', family: 'Father', lines: '111', image: 'Heaven' },
 ];
 
 export const HEXAGRAM_NUMBERS = Array.from({ length: 64 }, (_, i) => i + 1);
@@ -43,6 +44,7 @@ const pct = (x) => `${Number((x * 100).toFixed(2))}%`;
 export function hexagramPath(n) { return `/library/${n}`; }
 export function trigramPath(slug) { return `/trigrams/${slug}`; }
 export function hexagramUrl(n) { return `${SITE_URL}${hexagramPath(n)}`; }
+export function hexagramShareImageUrl(n) { return `${SITE_URL}/share/hexagram-${n}.png`; }
 
 export function trigramIndexOf(slug) {
   return TRIGRAM_META.findIndex((t) => t.slug === slug);
@@ -55,6 +57,7 @@ export function trigramRecord(index) {
     name: base.name,
     slug: meta.slug,
     chinese: base.chinese,
+    pinyin: meta.pinyin,
     symbol: base.symbol,
     element: base.element,
     attribute: base.attribute,
@@ -84,6 +87,7 @@ export function hexagramRecord(n) {
     number: n,
     name: HEXAGRAM_NAMES[n],
     chinese: HEXAGRAM_CHINESE[n],
+    pinyin: HEXAGRAM_PINYIN[n],
     upper_trigram: trigramRecord(upperIndex),
     lower_trigram: trigramRecord(lowerIndex),
     lines_bottom_to_top: lines.map((v) => (v === 7 ? '1' : '0')).join(''),
@@ -105,6 +109,11 @@ export function hexagramRecord(n) {
 
 export const ALL_HEXAGRAMS = HEXAGRAM_NUMBERS.map(hexagramRecord);
 
+/** Pinyin without tone marks or spaces, so "Xiao Chu", "xiaochu" and "xiǎo chù" compare equal. */
+export function foldPinyin(text) {
+  return String(text ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z]/gi, '').toLowerCase();
+}
+
 export function findHexagram(query) {
   const raw = String(query ?? '').trim();
   if (!raw) return { match: null, candidates: [] };
@@ -117,6 +126,9 @@ export function findHexagram(query) {
   const norm = (s) => s.toLowerCase().replace(/^the\s+/, '');
   const exact = ALL_HEXAGRAMS.find((h) => norm(h.name) === q || h.chinese === raw);
   if (exact) return { match: exact, candidates: [] };
+  const byPinyin = ALL_HEXAGRAMS.filter((h) => foldPinyin(h.pinyin) === foldPinyin(raw));
+  if (byPinyin.length === 1) return { match: byPinyin[0], candidates: [] };
+  if (byPinyin.length > 1) return { match: null, candidates: byPinyin };
   const partial = ALL_HEXAGRAMS.filter((h) => norm(h.name).includes(q));
   if (partial.length === 1) return { match: partial[0], candidates: [] };
   return { match: null, candidates: partial };
@@ -347,10 +359,11 @@ function hexagramPage(n) {
     title: `Hexagram ${n}: ${name} | ${SITE_NAME}`,
     description,
     h1: `Hexagram ${n}: ${h.name}`,
-    eyebrow: `${h.chinese} · King Wen sequence ${n} of 64`,
+    eyebrow: `${h.chinese} ${h.pinyin} · King Wen sequence ${n} of 64`,
     blocks: [
       { t: 'figure', lines, label: `Hexagram ${n}, ${h.name}` },
       { t: 'facts', items: [
+        ['Chinese name', `${h.chinese} (${h.pinyin})`],
         ['Upper trigram', `[${h.upper_trigram.name} ${h.upper_trigram.chinese}](${trigramPath(h.upper_trigram.slug)}), ${h.upper_trigram.element}, ${h.upper_trigram.attribute}`],
         ['Lower trigram', `[${h.lower_trigram.name} ${h.lower_trigram.chinese}](${trigramPath(h.lower_trigram.slug)}), ${h.lower_trigram.element}, ${h.lower_trigram.attribute}`],
         ['Lines, bottom to top', `${h.lines_bottom_to_top} (1 = solid yang, 0 = broken yin)`],
@@ -370,13 +383,14 @@ function hexagramPage(n) {
         ['Inverse (turned upside down)', h.inverse_hexagram === n ? 'itself' : link(h.inverse_hexagram)],
         ['Opposite (every line flipped)', link(h.opposite_hexagram)],
       ] },
+      { t: 'p', text: 'What these relationships mean: [nuclear, inverse and opposite hexagrams](/related-hexagrams).' },
       { t: 'h2', text: 'If one line changes' },
       { t: 'table', head: ['Changing line', 'Relating hexagram'], rows: h.single_line_changes.map((c) => [`Line ${c.line}`, link(c.relating_hexagram)]) },
       { t: 'p', text: `Previous: ${n > 1 ? link(n - 1) : 'none'}. Next: ${n < 64 ? link(n + 1) : 'none'}. [All sixty-four hexagrams](/library).` },
       { t: 'note', text: `The judgment, image and counsel are original contemporary paraphrases written for ${SITE_NAME}. The line text is the CC0 translation from [jesshewitt/i-ching](${LINES_SOURCE_URL}), derived from Richard Wilhelm's 1924 German edition.` },
     ],
   };
-  page.jsonld = [articleLd(page, description), crumb([['Home', '/'], ['Library', '/library'], [`Hexagram ${n}`, page.path]])];
+  page.jsonld = [{ ...articleLd(page, description), image: hexagramShareImageUrl(n) }, crumb([['Home', '/'], ['Library', '/library'], [`Hexagram ${n}`, page.path]])];
   return withCitation(page);
 }
 
@@ -391,7 +405,7 @@ function libraryPage() {
     eyebrow: 'The sixty-four changes',
     blocks: [
       { t: 'p', text: 'Browse the sixty-four figures outside the ritual of a cast. Each page gives the structure, a contemporary interpretation, and the six line texts.' },
-      { t: 'table', head: ['No.', 'Hexagram', 'Trigrams (upper over lower)', 'Summary'], rows: ALL_HEXAGRAMS.map((h) => [h.number, `[${h.name} ${h.chinese}](${hexagramPath(h.number)})`, `${h.upper_trigram.element} over ${h.lower_trigram.element}`, firstSentence(h.judgment)]) },
+      { t: 'table', head: ['No.', 'Hexagram', 'Trigrams (upper over lower)', 'Summary'], rows: ALL_HEXAGRAMS.map((h) => [h.number, `[${h.name} ${h.chinese}](${hexagramPath(h.number)}) ${h.pinyin}`, `${h.upper_trigram.element} over ${h.lower_trigram.element}`, firstSentence(h.judgment)]) },
     ],
   };
   page.jsonld = [articleLd(page, description), crumb([['Home', '/'], ['Library', '/library']])];
@@ -413,7 +427,7 @@ function trigramPage(index) {
     eyebrow: `Trigram ${t.symbol}`,
     blocks: [
       { t: 'facts', items: [
-        ['Symbol', `${t.symbol} ${t.chinese}`],
+        ['Symbol', `${t.symbol} ${t.chinese} (${t.pinyin})`],
         ['Natural image', t.element],
         ['Quality', t.attribute],
         ['Family role', t.family],
@@ -442,7 +456,7 @@ function trigramsPage() {
     eyebrow: 'Building blocks of the hexagrams',
     blocks: [
       { t: 'p', text: 'Every hexagram is built from two of eight trigrams. Lines are listed from the bottom up, 1 for a solid (yang) line and 0 for a broken (yin) line.' },
-      { t: 'table', head: ['Trigram', 'Image', 'Quality', 'Family role', 'Lines'], rows: ALL_TRIGRAMS.map((t) => [`[${t.name} ${t.chinese} ${t.symbol}](${trigramPath(t.slug)})`, t.element, t.attribute, t.family, t.lines_bottom_to_top]) },
+      { t: 'table', head: ['Trigram', 'Image', 'Quality', 'Family role', 'Lines'], rows: ALL_TRIGRAMS.map((t) => [`[${t.name} ${t.chinese} ${t.symbol}](${trigramPath(t.slug)}) ${t.pinyin}`, t.element, t.attribute, t.family, t.lines_bottom_to_top]) },
       { t: 'p', text: 'Sixty-four hexagrams come from eight lower trigrams times eight upper trigrams. [Browse them in the library](/library).' },
     ],
   };
@@ -552,8 +566,8 @@ function methodsPage() {
 }
 
 export const DATA_FILES = [
-  { file: 'hexagrams.json', csv: 'hexagrams.csv', name: 'The 64 hexagrams', description: 'King Wen number, English name, Chinese name, upper and lower trigram, line pattern, nuclear, inverse and opposite hexagram, and a short contemporary judgment for each of the 64 hexagrams.', license: 'CC BY 4.0', rows: 64 },
-  { file: 'trigrams.json', csv: 'trigrams.csv', name: 'The 8 trigrams', description: 'Name, Chinese character, symbol, natural image, quality, family role and line pattern for each of the eight trigrams.', license: 'CC BY 4.0', rows: 8 },
+  { file: 'hexagrams.json', csv: 'hexagrams.csv', name: 'The 64 hexagrams', description: 'King Wen number, English name, Chinese name in traditional characters with Hanyu Pinyin, upper and lower trigram, line pattern, nuclear, inverse and opposite hexagram, and a short contemporary judgment for each of the 64 hexagrams.', license: 'CC BY 4.0', rows: 64 },
+  { file: 'trigrams.json', csv: 'trigrams.csv', name: 'The 8 trigrams', description: 'Name, Chinese character with Hanyu Pinyin, symbol, natural image, quality, family role and line pattern for each of the eight trigrams.', license: 'CC BY 4.0', rows: 8 },
   { file: 'line-changes.json', csv: 'line-changes.csv', name: 'Single line change table', description: 'For each hexagram and each of its six lines, the relating hexagram you reach when only that line changes (384 rows).', license: 'CC BY 4.0', rows: 384 },
   { file: 'cast-probabilities.json', csv: null, name: 'Cast probabilities by method', description: 'Exact line, changing-line and relating-hexagram probabilities for the yarrow-weighted and three-coin methods, worked out by enumerating all 4,096 line combinations.', license: 'CC BY 4.0', rows: 2 },
   { file: 'hexagram-lines.json', csv: 'hexagram-lines.csv', name: 'Changing-line texts (third party, CC0)', description: 'The six line texts for each hexagram from the CC0 translation by Jess Hewitt and Claude, derived from Richard Wilhelm. Third-party text, public domain dedication.', license: 'CC0 1.0', rows: 384 },
@@ -631,7 +645,7 @@ function homePage() {
       { t: 'ul', items: [
         'Cast a reading with the [yarrow-weighted digital cast or three physical coins](/methods).',
         'Read as an Inquirer (meaning first) or an Adept (trigrams, line values, changing-line text and method detail).',
-        'Browse all sixty-four hexagrams in the [library](/library) and the [eight trigrams](/trigrams).',
+        'Browse all sixty-four hexagrams in the [library](/library) and the [eight trigrams](/trigrams), and see how hexagrams relate through [nuclear, inverse and opposite figures](/related-hexagrams).',
         'Keep a private journal and return to readings over time.',
       ] },
       { t: 'h2', text: 'Key facts' },
@@ -648,6 +662,7 @@ function homePage() {
         'Open data (JSON and CSV, CC BY 4.0): [/data](/data)',
         'Machine-readable guide: [/llms.txt](/llms.txt)',
         'Read-only MCP server: ' + SITE_URL + '/mcp',
+        'Short answers: [FAQ](/faq). What changed and when: [changelog](/changelog)',
       ] },
     ],
   };
@@ -658,6 +673,166 @@ function homePage() {
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, description,
     },
   ];
+  return withCitation(page);
+}
+
+/* ---------- related hexagrams explainer ---------- */
+
+/** Facts about the nuclear, inverse and opposite relationships, worked out from the 64 figures. */
+export function relationshipStats() {
+  const selfInverse = ALL_HEXAGRAMS.filter((h) => h.inverse_hexagram === h.number).map((h) => h.number);
+  const nuclearSet = [...new Set(ALL_HEXAGRAMS.map((h) => h.nuclear_hexagram))].sort((a, b) => a - b);
+  const nuclearEnd = (n) => {
+    let current = n;
+    for (let i = 0; i < 6; i += 1) current = ALL_HEXAGRAMS[current - 1].nuclear_hexagram;
+    return current;
+  };
+  const ends = { 1: 0, 2: 0, cycle_63_64: 0 };
+  for (const h of ALL_HEXAGRAMS) {
+    const end = nuclearEnd(h.number);
+    if (end === 1) ends[1] += 1;
+    else if (end === 2) ends[2] += 1;
+    else ends.cycle_63_64 += 1;
+  }
+  const pairs = Array.from({ length: 32 }, (_, k) => [2 * k + 1, 2 * k + 2]);
+  const inversePairs = pairs.filter(([a, b]) => ALL_HEXAGRAMS[a - 1].inverse_hexagram === b);
+  const oppositeOnlyPairs = pairs.filter(([a, b]) => ALL_HEXAGRAMS[a - 1].inverse_hexagram !== b && ALL_HEXAGRAMS[a - 1].opposite_hexagram === b);
+  const bothPairs = inversePairs.filter(([a, b]) => ALL_HEXAGRAMS[a - 1].opposite_hexagram === b);
+  return { selfInverse, nuclearSet, ends, inversePairs, oppositeOnlyPairs, bothPairs };
+}
+
+function relatedHexagramsPage() {
+  const description = 'What the nuclear, inverse and opposite hexagrams of the I Ching are, how each is built from the six lines, and how the King Wen sequence pairs the 64 hexagrams.';
+  const s = relationshipStats();
+  const link = (m) => `[${m} ${HEXAGRAM_NAMES[m]}](${hexagramPath(m)})`;
+  const pairText = (list) => list.map(([a, b]) => `${a} and ${b}`).join(', ');
+  const h3 = ALL_HEXAGRAMS[2];
+  const h24 = ALL_HEXAGRAMS[23];
+  const page = {
+    path: '/related-hexagrams',
+    kind: 'guide',
+    title: `Nuclear, inverse and opposite hexagrams explained | ${SITE_NAME}`,
+    description,
+    h1: 'Nuclear, Inverse and Opposite Hexagrams',
+    eyebrow: 'How the hexagrams relate',
+    blocks: [
+      { t: 'p', text: 'Every hexagram page in the [library](/library) lists three related hexagrams. Each one is made from the same six lines by a fixed rule, so the relationships are a matter of structure, not interpretation. Commentators have long used them as extra angles on a reading.' },
+      { t: 'p', text: 'Lines are always counted from the bottom (line 1) to the top (line 6).' },
+      { t: 'h2', text: 'Nuclear hexagram (hù guà 互卦)' },
+      { t: 'p', text: 'Take the four middle lines. Lines 2, 3 and 4 make the lower nuclear trigram, and lines 3, 4 and 5 make the upper nuclear trigram. The bottom and top lines drop out. The nuclear hexagram is often read as the inner dynamic of a situation, what is at work beneath its surface.' },
+      { t: 'p', text: `Example: ${link(3)} has lines ${h3.lines_bottom_to_top}. Lines 2 to 4 give ${h3.lines_bottom_to_top.slice(1, 4)} and lines 3 to 5 give ${h3.lines_bottom_to_top.slice(2, 5)}, so its nuclear hexagram is ${link(h3.nuclear_hexagram)}.` },
+      { t: 'ul', items: [
+        `Only ${s.nuclearSet.length} of the 64 hexagrams ever appear as a nuclear hexagram: ${s.nuclearSet.join(', ')}.`,
+        `Taking the nuclear of the nuclear again and again always ends in one of three places: ${link(1)} (for ${s.ends[1]} hexagrams), ${link(2)} (for ${s.ends[2]}), or a back and forth between ${link(63)} and ${link(64)} (for ${s.ends.cycle_63_64}).`,
+      ] },
+      { t: 'h2', text: 'Inverse hexagram (zōng guà 綜卦)' },
+      { t: 'p', text: 'Turn the figure upside down, so line 6 becomes line 1. The inverse is often read as the same situation seen from the other side, or from the position of the other party.' },
+      { t: 'p', text: `Example: ${link(24)} (${h24.lines_bottom_to_top}) turned over gives ${link(h24.inverse_hexagram)} (${ALL_HEXAGRAMS[h24.inverse_hexagram - 1].lines_bottom_to_top}). Return, one yang line coming back at the bottom, mirrors Splitting Apart, one yang line left at the top.` },
+      { t: 'p', text: `${s.selfInverse.length} hexagrams are symmetrical and look the same upside down: ${s.selfInverse.map(link).join(', ')}. Their inverse is themselves.` },
+      { t: 'h2', text: 'Opposite hexagram (cuò guà 錯卦)' },
+      { t: 'p', text: 'Change every line: each solid line becomes broken and each broken line becomes solid. The opposite is often read as the complement of the situation, the qualities it lacks or holds in reserve.' },
+      { t: 'p', text: `Example: the opposite of ${link(1)} (all solid) is ${link(2)} (all broken). The opposite of ${link(24)} is ${link(h24.opposite_hexagram)}.` },
+      { t: 'h2', text: 'How the King Wen sequence uses them' },
+      { t: 'p', text: `The traditional order groups the 64 hexagrams into 32 pairs (1 and 2, 3 and 4, and so on). In ${s.inversePairs.length} pairs the second hexagram is the first turned upside down. The other ${s.oppositeOnlyPairs.length} pairs (${pairText(s.oppositeOnlyPairs)}) are made of symmetrical hexagrams, which cannot be turned over, so they are paired with their opposite instead. In ${s.bothPairs.length} pairs (${pairText(s.bothPairs)}) the second hexagram is both the inverse and the opposite of the first.` },
+      { t: 'h2', text: 'Where to find them' },
+      { t: 'ul', items: [
+        'Each hexagram page lists its nuclear, inverse and opposite hexagram under "Related hexagrams".',
+        'The [hexagrams dataset](/data) has nuclear_hexagram, inverse_hexagram and opposite_hexagram columns for all 64.',
+        'The relating hexagram of a reading is a different idea: it comes from changing only the moving lines of a cast. See [casting methods](/methods).',
+      ] },
+    ],
+  };
+  page.jsonld = [articleLd(page, description), crumb([['Home', '/'], ['Library', '/library'], ['Related hexagrams', page.path]])];
+  return withCitation(page);
+}
+
+/* ---------- FAQ ---------- */
+
+/** Questions and answers shown on /faq, in its FAQPage markup and in llms/faq.txt. Answers may use [text](/path) links. */
+export function faqItems() {
+  const y = castStatistics().methods.yarrow;
+  return [
+    { q: 'Does the I Ching predict the future?', a: `No. ${SITE_NAME} presents it as a tool for reflection. A reading is a prompt to think about a situation, not a forecast of events.` },
+    { q: 'Is The Free I Ching free? Do I need an account?', a: 'Yes, it is free, and no account is needed. There is an optional $10 per year contribution on the web and an optional Supporter Upgrade in the iPhone and iPad app. Paying never changes the quality or availability of a reading.' },
+    { q: 'Are my questions and readings stored on a server?', a: 'No. Questions, readings and journal entries are stored in your browser or on your device. Optional website analytics never receive the text of questions, readings or journal entries, and the iPhone and iPad app includes no analytics. See the [privacy page](/privacy).' },
+    { q: 'How is a hexagram cast?', a: 'Six lines are built from the bottom up, and each line has a value of 6, 7, 8 or 9. You can use the yarrow-weighted digital cast or toss three coins yourself. See [casting methods](/methods).' },
+    { q: 'What is a changing line?', a: 'A line with the value 6 (old yin) or 9 (old yang). It has its own line text, and it flips to its opposite to give a second figure, the relating hexagram. In both methods each line is changing 25% of the time.' },
+    { q: 'How likely is a cast with no changing lines?', a: `About ${pct(y.probability_no_changing_lines)} of casts have no changing lines, in both methods. Each line is stable three times out of four, and 0.75 to the sixth power is about 0.178.` },
+    { q: 'What is the difference between the yarrow and coin odds?', a: 'Both methods change a line 25% of the time and make all 64 hexagrams equally likely. The yarrow odds for 6, 7, 8 and 9 are 1/16, 5/16, 7/16 and 3/16, so old yang is three times as likely as old yin. The coin odds are 1/8, 3/8, 3/8 and 1/8. See the [yarrow](/methods/yarrow) and [three-coin](/methods/three-coin) pages.' },
+    { q: 'What are the eight trigrams?', a: 'Three-line figures named Qian (Heaven), Kun (Earth), Zhen (Thunder), Xun (Wind), Kan (Water), Li (Fire), Gen (Mountain) and Dui (Lake). Every hexagram is one trigram above another, which is why there are 8 times 8 = 64 hexagrams. See [the trigrams](/trigrams).' },
+    { q: 'What are nuclear, inverse and opposite hexagrams?', a: 'Three figures made from the same six lines by fixed rules: the nuclear hexagram uses the four middle lines, the inverse turns the figure upside down, and the opposite changes every line. See [the explainer](/related-hexagrams).' },
+    { q: 'Where do the texts come from?', a: `The judgment, image and counsel are original contemporary paraphrases written for ${SITE_NAME}. The six line texts for each hexagram are a CC0 translation from [jesshewitt/i-ching](${LINES_SOURCE_URL}), derived from Richard Wilhelm's 1924 German edition.` },
+    { q: 'Can I reuse the data?', a: `Yes. The hexagram, trigram, line change and probability data is open as JSON and CSV under CC BY 4.0 at [/data](/data). Credit "${SITE_NAME}, ${SITE_URL}/data".` },
+    { q: 'Can an AI assistant query it directly?', a: `Yes. A read-only MCP server at ${SITE_URL}/mcp answers hexagram, trigram, line text and probability lookups with no key. Start at [/llms.txt](/llms.txt).` },
+  ];
+}
+
+const plainText = (s) => s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '$1');
+
+function faqPage() {
+  const description = 'Short answers about the I Ching and The Free I Ching: prediction, cost, privacy, casting methods, changing lines, trigrams, related hexagrams, sources and open data.';
+  const items = faqItems();
+  const page = {
+    path: '/faq',
+    kind: 'faq',
+    title: `I Ching questions and answers | ${SITE_NAME}`,
+    description,
+    h1: 'Frequently Asked Questions',
+    eyebrow: 'Short answers',
+    blocks: items.flatMap(({ q, a }) => [{ t: 'h3', text: q }, { t: 'p', text: a }]),
+  };
+  page.jsonld = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      url: `${SITE_URL}/faq`,
+      dateModified: CONTENT_UPDATED,
+      inLanguage: 'en',
+      mainEntity: items.map(({ q, a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: plainText(a) },
+      })),
+    },
+    crumb([['Home', '/'], ['FAQ', '/faq']]),
+  ];
+  return withCitation(page);
+}
+
+/* ---------- changelog ---------- */
+
+/** Visible changes to the site and its open data, newest first. Add an entry whenever CONTENT_UPDATED is bumped. */
+export const CHANGELOG = [
+  { date: '2026-10-31', items: [
+    'Added this changelog, a [FAQ page](/faq) with FAQPage markup, and an explainer on [nuclear, inverse and opposite hexagrams](/related-hexagrams).',
+    'Added Hanyu Pinyin for all 64 hexagram names and 8 trigrams to the pages, the [open data](/data) (new pinyin column), llms.txt topic files and the MCP get_hexagram tool, which now also finds hexagrams by pinyin.',
+    'Each hexagram page now has its own share image (shown when the page is linked in chat apps and social posts).',
+    'Privacy page: product analytics are website only, the iPhone and iPad app includes none, and clicked text is masked so questions never reach analytics.',
+  ] },
+  { date: '2026-10-13', items: ['The web support banner shows how many yearly supporters cover hosting and upkeep.'] },
+  { date: '2026-10-08', items: [
+    'Public pages are now prerendered HTML: the library and all 64 hexagram pages, the trigram pages, the casting method pages and the open data page.',
+    'Added markdown twins of every content page, [open data](/data) under CC BY 4.0, [/llms.txt](/llms.txt) with topic files, and a read-only MCP server at /mcp.',
+    'Added optional, consent-based Google Analytics for public website pages, and a usage analytics section on the privacy page.',
+  ] },
+  { date: '2026-09-07', items: ['Added the two reading roles, Inquirer (meaning first) and Adept (trigrams, line values and changing-line detail), and prepared the iPhone and iPad app.'] },
+];
+
+function changelogPage() {
+  const description = `What changed on ${SITE_NAME} and in its open data, with dates, newest first.`;
+  const page = {
+    path: '/changelog',
+    kind: 'changelog',
+    title: `Changelog | ${SITE_NAME}`,
+    description,
+    h1: 'Changelog',
+    eyebrow: 'What changed and when',
+    blocks: [
+      { t: 'p', text: 'Changes to the public pages, the open data and the tools for AI assistants, newest first. Small fixes and behind-the-scenes work are left out.' },
+      ...CHANGELOG.flatMap(({ date, items }) => [{ t: 'h3', text: formatDate(date) }, { t: 'ul', items }]),
+    ],
+  };
+  page.jsonld = [articleLd(page, description), crumb([['Home', '/'], ['Changelog', '/changelog']])];
   return withCitation(page);
 }
 
@@ -674,6 +849,9 @@ export function allPages() {
     methodPage('yarrow'),
     methodPage('three-coin'),
     dataPage(),
+    relatedHexagramsPage(),
+    faqPage(),
+    changelogPage(),
   ];
   return pageCache;
 }
@@ -688,6 +866,7 @@ export function pageSummary(h) {
     number: h.number,
     name: h.name,
     chinese: h.chinese,
+    pinyin: h.pinyin,
     upper_trigram: h.upper_trigram.name,
     lower_trigram: h.lower_trigram.name,
     url: h.url,

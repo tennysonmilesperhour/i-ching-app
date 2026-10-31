@@ -10,6 +10,7 @@ import {
   SITE_NAME,
   SITE_URL,
   castStatistics,
+  faqItems,
 } from './siteContent.js';
 
 const ATTRIBUTION = `${SITE_NAME}, ${SITE_URL}/data`;
@@ -38,6 +39,7 @@ export function buildDataFiles() {
     number: h.number,
     name: h.name,
     chinese: h.chinese,
+    pinyin: h.pinyin,
     upper_trigram: h.upper_trigram.name,
     lower_trigram: h.lower_trigram.name,
     upper_element: h.upper_trigram.element,
@@ -50,7 +52,7 @@ export function buildDataFiles() {
     url: h.url,
   }));
   const trigramRows = ALL_TRIGRAMS.map((t) => ({
-    name: t.name, chinese: t.chinese, symbol: t.symbol, element: t.element, quality: t.attribute, family_role: t.family, lines_bottom_to_top: t.lines_bottom_to_top, url: t.url,
+    name: t.name, chinese: t.chinese, pinyin: t.pinyin, symbol: t.symbol, element: t.element, quality: t.attribute, family_role: t.family, lines_bottom_to_top: t.lines_bottom_to_top, url: t.url,
   }));
   const changeRows = ALL_HEXAGRAMS.flatMap((h) => h.single_line_changes.map((c) => ({
     hexagram: h.number,
@@ -109,6 +111,11 @@ export function buildCatalog() {
 /* ---------- llms.txt and topic files ---------- */
 
 const firstSentence = (t) => t.split(/(?<=[.!?])\s/)[0];
+// "[privacy page](/privacy)" becomes "privacy page (https://thefreeiching.com/privacy)" for plain text files.
+const linksToText = (t) => t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, text, href) => {
+  const url = href.startsWith('/') ? `${SITE_URL}${href}` : href;
+  return text === href || text === url.replace(SITE_URL, '') ? url : `${text} (${url})`;
+});
 
 export function buildLlmsFiles() {
   const root = `# ${SITE_NAME}
@@ -123,7 +130,7 @@ export function buildLlmsFiles() {
 - Changing-line texts are third-party CC0 text from ${LINES_SOURCE_URL}.
 
 ## Key facts
-- 64 hexagrams in the King Wen sequence, 8 trigrams, 384 line texts (6 per hexagram).
+- 64 hexagrams in the King Wen sequence, 8 trigrams, 384 line texts (6 per hexagram). Chinese names are given in traditional characters with Hanyu Pinyin.
 - Two casting methods: yarrow-weighted digital cast (line odds 6: 1/16, 7: 5/16, 8: 7/16, 9: 3/16) and a three-coin method (heads 3, tails 2; odds 1/8, 3/8, 3/8, 1/8).
 - In both methods each line changes 25% of the time, about 17.8% of casts have no changing lines, and each primary hexagram has a 1/64 chance.
 - Two reading roles: Inquirer (meaning first) and Adept (trigrams, line values, changing lines, method detail).
@@ -136,7 +143,7 @@ export function buildLlmsFiles() {
 - [Judgments](${SITE_URL}/llms/judgments.txt): the full contemporary judgment for each hexagram
 - [Trigrams](${SITE_URL}/llms/trigrams.txt): the eight trigrams
 - [Methods](${SITE_URL}/llms/methods.txt): casting methods and exact probabilities
-- [FAQ](${SITE_URL}/llms/faq.txt): common questions with short answers
+- [FAQ](${SITE_URL}/llms/faq.txt): common questions with short answers (also at ${SITE_URL}/faq)
 
 ## Data and tools
 - [Open data page](${SITE_URL}/data) and [catalog](${SITE_URL}/data/index.json): JSON and CSV, CC BY 4.0
@@ -152,6 +159,9 @@ export function buildLlmsFiles() {
 - [Hexagram library](${SITE_URL}/library)
 - [Trigrams](${SITE_URL}/trigrams)
 - [Casting methods](${SITE_URL}/methods): [yarrow](${SITE_URL}/methods/yarrow), [three coin](${SITE_URL}/methods/three-coin)
+- [Nuclear, inverse and opposite hexagrams](${SITE_URL}/related-hexagrams)
+- [FAQ](${SITE_URL}/faq)
+- [Changelog](${SITE_URL}/changelog): what changed and when
 - [Sitemap](${SITE_URL}/sitemap.xml)
 
 Last updated: ${CONTENT_UPDATED}
@@ -159,9 +169,9 @@ Last updated: ${CONTENT_UPDATED}
 
   const hexagrams = `# Hexagram index
 
-All 64 hexagrams in King Wen order. Each line: number, name, Chinese name, upper trigram over lower trigram, one-line summary, page. Full text: ${SITE_URL}/library/N (add .md for markdown).
+All 64 hexagrams in King Wen order. Each line: number, name, Chinese name (pinyin), upper trigram over lower trigram, one-line summary, page. Full text: ${SITE_URL}/library/N (add .md for markdown).
 
-${ALL_HEXAGRAMS.map((h) => `${h.number}. ${h.name} ${h.chinese} | ${h.upper_trigram.name} (${h.upper_trigram.element}) over ${h.lower_trigram.name} (${h.lower_trigram.element}) | ${firstSentence(h.judgment)} | ${h.url}`).join('\n')}
+${ALL_HEXAGRAMS.map((h) => `${h.number}. ${h.name} ${h.chinese} (${h.pinyin}) | ${h.upper_trigram.name} (${h.upper_trigram.element}) over ${h.lower_trigram.name} (${h.lower_trigram.element}) | ${firstSentence(h.judgment)} | ${h.url}`).join('\n')}
 
 ${REFLECTION_NOTICE}
 Source: ${SITE_NAME}, ${SITE_URL}/library. Updated ${CONTENT_UPDATED}.
@@ -171,7 +181,7 @@ Source: ${SITE_NAME}, ${SITE_URL}/library. Updated ${CONTENT_UPDATED}.
 
 Original paraphrases written for ${SITE_NAME}, not classical translations. Quote with a link to the hexagram page. Image, counsel and line texts are on each page.
 
-${ALL_HEXAGRAMS.map((h) => `## ${h.number}. ${h.name} ${h.chinese}\n${h.judgment}\nPage: ${h.url}`).join('\n\n')}
+${ALL_HEXAGRAMS.map((h) => `## ${h.number}. ${h.name} ${h.chinese} (${h.pinyin})\n${h.judgment}\nPage: ${h.url}`).join('\n\n')}
 
 ${REFLECTION_NOTICE}
 Source: ${SITE_NAME}, ${SITE_URL}/library. Updated ${CONTENT_UPDATED}.
@@ -181,7 +191,7 @@ Source: ${SITE_NAME}, ${SITE_URL}/library. Updated ${CONTENT_UPDATED}.
 
 Lines are listed bottom to top, 1 = solid yang, 0 = broken yin.
 
-${ALL_TRIGRAMS.map((t) => `## ${t.name} ${t.chinese} ${t.symbol}\nImage: ${t.element}. Quality: ${t.attribute}. Family role: ${t.family}. Lines: ${t.lines_bottom_to_top}.\nPage: ${t.url}`).join('\n\n')}
+${ALL_TRIGRAMS.map((t) => `## ${t.name} ${t.chinese} ${t.symbol} (${t.pinyin})\nImage: ${t.element}. Quality: ${t.attribute}. Family role: ${t.family}. Lines: ${t.lines_bottom_to_top}.\nPage: ${t.url}`).join('\n\n')}
 
 Each hexagram is an upper trigram over a lower trigram: 8 x 8 = 64.
 Source: ${SITE_NAME}, ${SITE_URL}/trigrams. Updated ${CONTENT_UPDATED}.
@@ -211,31 +221,12 @@ Source: ${SITE_NAME}, ${SITE_URL}/methods. Updated ${CONTENT_UPDATED}.
 
   const faq = `# Frequently asked questions
 
-## Does the I Ching predict the future?
-No. ${SITE_NAME} presents it as a tool for reflection. A reading is a prompt to think about a situation, not a forecast.
+Same questions and answers as ${SITE_URL}/faq.
 
-## Is it free?
-Yes. No account is needed. There is an optional $10 per year contribution on the web and an optional Supporter Upgrade in the iPhone and iPad app. Payment never changes the quality or availability of a reading.
+${faqItems().map(({ q, a }) => `## ${q}\n${linksToText(a)}`).join('\n\n')}
 
-## Are my questions and readings stored on a server?
-Questions, readings and journal entries are stored on the user's own device or browser. See ${SITE_URL}/privacy.
-
-## How is a hexagram cast?
-Six lines are built from the bottom up. Each line is 6, 7, 8 or 9. See ${SITE_URL}/methods.
-
-## What is a changing line?
-A line with value 6 or 9. It carries its own text and flips to give a second, relating hexagram. Each line changes 25% of the time.
-
-## Where do the texts come from?
-The judgment, image and counsel are original contemporary paraphrases. The six line texts per hexagram are a CC0 translation from ${LINES_SOURCE_URL}, derived from Richard Wilhelm's 1924 German edition.
-
-## Can I reuse the data?
-Yes. JSON and CSV under CC BY 4.0 at ${SITE_URL}/data. Credit "${ATTRIBUTION}".
-
-## Can an AI assistant query it directly?
-Yes, through the read-only MCP server at ${SITE_URL}/mcp, no key needed.
-
-Updated ${CONTENT_UPDATED}.
+${REFLECTION_NOTICE}
+Source: ${SITE_NAME}, ${SITE_URL}/faq. Updated ${CONTENT_UPDATED}.
 `;
 
   return {

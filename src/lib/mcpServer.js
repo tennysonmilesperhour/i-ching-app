@@ -26,6 +26,7 @@ const hexagramView = (h) => ({
   number: h.number,
   name: h.name,
   chinese: h.chinese,
+  pinyin: h.pinyin,
   upper_trigram: h.upper_trigram.name,
   lower_trigram: h.lower_trigram.name,
   lines_bottom_to_top: h.lines_bottom_to_top,
@@ -46,13 +47,13 @@ class ToolError extends Error {}
 const TOOLS = [
   {
     name: 'get_hexagram',
-    description: 'Look up one I Ching hexagram by King Wen number (1 to 64), English name or Chinese name. Returns trigrams, line pattern, contemporary judgment, image, counsel, the six line texts and related hexagrams.',
-    inputSchema: { type: 'object', properties: { query: { type: 'string', description: 'Number such as "24", name such as "Return" or "The Creative", or a Chinese name such as "復".' } }, required: ['query'], additionalProperties: false },
+    description: 'Look up one I Ching hexagram by King Wen number (1 to 64), English name, Chinese name or pinyin. Returns trigrams, line pattern, contemporary judgment, image, counsel, the six line texts and related hexagrams.',
+    inputSchema: { type: 'object', properties: { query: { type: 'string', description: 'Number such as "24", name such as "Return" or "The Creative", a Chinese name such as "復", or pinyin such as "fu".' } }, required: ['query'], additionalProperties: false },
     run({ query }) {
       const { match, candidates } = findHexagram(query);
       if (match) return hexagramView(match);
       if (candidates.length) return { message: 'More than one hexagram matches. Ask again with a number or full name.', candidates: candidates.map(pageSummary) };
-      throw new ToolError(`No hexagram matches "${query}". Use a number from 1 to 64 or an English or Chinese name.`);
+      throw new ToolError(`No hexagram matches "${query}". Use a number from 1 to 64, an English or Chinese name, or pinyin.`);
     },
   },
   {

@@ -74,6 +74,9 @@ export const AuthenticatedApp = () => {
         <Route path="/methods" element={<StaticPage />} />
         <Route path="/methods/:slug" element={<StaticPage />} />
         <Route path="/data" element={<StaticPage />} />
+        <Route path="/faq" element={<StaticPage />} />
+        <Route path="/changelog" element={<StaticPage />} />
+        <Route path="/related-hexagrams" element={<StaticPage />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/support" element={<Support />} />
         <Route path="/support/thanks" element={<SupportThanks />} />
