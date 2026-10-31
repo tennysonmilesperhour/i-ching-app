@@ -1,6 +1,6 @@
 import { HEXAGRAM_NAMES } from './hexagramData.js';
 import { HEXAGRAM_INTERPRETATIONS } from './hexagramInterpretations.js';
-import { allPages } from './siteContent.js';
+import { allPages, hexagramShareImageUrl } from './siteContent.js';
 
 export const SITE_ORIGIN = 'https://thefreeiching.com';
 export const OG_IMAGE = `${SITE_ORIGIN}/og-image.png`;
@@ -40,7 +40,7 @@ export function publicPaths() {
   return ['/', '/library', ...hexagrams, ...extra];
 }
 
-const EXTRA_PATH = /^\/(trigrams(\/[a-z]+)?|methods(\/[a-z-]+)?|data)$/;
+const EXTRA_PATH = /^\/(trigrams(\/[a-z]+)?|methods(\/[a-z-]+)?|data|faq|changelog|related-hexagrams)$/;
 
 function extraPage(path) {
   // Cheap check first so ordinary app routes never build the content pages.
@@ -84,6 +84,8 @@ export function seoForPath(pathname) {
         description: truncate(interpretation.judgment),
         canonical: `${SITE_ORIGIN}/library/${number}`,
         type: 'article',
+        image: hexagramShareImageUrl(number),
+        imageAlt: `Hexagram ${number}, ${name}, with its six lines`,
       });
     }
   }
@@ -119,8 +121,10 @@ function page({
   robots = 'index, follow',
   type = 'website',
   prerender = true,
+  image = OG_IMAGE,
+  imageAlt = OG_IMAGE_ALT,
 }) {
-  return { path, title, description, canonical, robots, type, prerender };
+  return { path, title, description, canonical, robots, type, prerender, image, imageAlt };
 }
 
 function esc(value) {
@@ -156,14 +160,14 @@ export function renderHead(seo, prerenderPath = '') {
   }
 
   tags.push(
-    `<meta property="og:image" content="${esc(OG_IMAGE)}" />`,
+    `<meta property="og:image" content="${esc(seo.image)}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
-    `<meta property="og:image:alt" content="${esc(OG_IMAGE_ALT)}" />`,
+    `<meta property="og:image:alt" content="${esc(seo.imageAlt)}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${title}" />`,
     `<meta name="twitter:description" content="${description}" />`,
-    `<meta name="twitter:image" content="${esc(OG_IMAGE)}" />`,
+    `<meta name="twitter:image" content="${esc(seo.image)}" />`,
     `<meta name="prerender-path" content="${esc(prerenderPath)}" />`,
   );
 
@@ -204,12 +208,12 @@ export function applyDocumentMeta(pathname) {
   upsertMeta('property', 'og:title', seo.title);
   upsertMeta('property', 'og:description', seo.description);
   upsertMeta('property', 'og:url', seo.canonical);
-  upsertMeta('property', 'og:image', OG_IMAGE);
-  upsertMeta('property', 'og:image:alt', OG_IMAGE_ALT);
+  upsertMeta('property', 'og:image', seo.image);
+  upsertMeta('property', 'og:image:alt', seo.imageAlt);
   upsertMeta('name', 'twitter:card', 'summary_large_image');
   upsertMeta('name', 'twitter:title', seo.title);
   upsertMeta('name', 'twitter:description', seo.description);
-  upsertMeta('name', 'twitter:image', OG_IMAGE);
+  upsertMeta('name', 'twitter:image', seo.image);
 
   let canonical = document.head.querySelector('link[rel="canonical"]');
   if (!seo.canonical) {

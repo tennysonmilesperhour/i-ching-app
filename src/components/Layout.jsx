@@ -99,6 +99,7 @@ export default function Layout() {
         <p className="text-xs tracking-widest text-ink/50 uppercase">The Book of Changes · 周易</p>
         <div className="mt-3 flex justify-center gap-5 text-xs text-ink/55">
           <Link to="/support" className="underline underline-offset-4 hover:text-ink">Support</Link>
+          {!native && <Link to="/faq" className="underline underline-offset-4 hover:text-ink">FAQ</Link>}
           <Link to="/privacy" className="underline underline-offset-4 hover:text-ink">Privacy</Link>
         </div>
         <p className="mt-4">
