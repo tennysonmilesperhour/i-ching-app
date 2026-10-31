@@ -17,3 +17,4 @@ After changing hexagram or page data, run `npm run gen:vercel` (a test fails if 
 
 ## Decisions
 - 2026-10-07: Agent access layer shipped (prerendered pages, markdown twins, open data CC BY 4.0, llms.txt, read-only MCP at /mcp, bot log, weekly review). See the plan doc.
+- 2026-10-31: Analytics are web only. The iOS app is declared "Data Not Collected", so build it with `npm run native:sync` (sets `VITE_NATIVE_BUILD=1` and checks the bundle); `src/lib/analyticsPolicy.test.js` guards this. PostHog runs with `mask_all_text` so clicked text (Journal questions) never leaves the device.
