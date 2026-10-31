@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Heart, X } from 'lucide-react';
+import SupporterGoal from '@/components/SupporterGoal';
 import { isNativePlatform } from '@/lib/platform';
 import {
   futureTimestamp,
@@ -67,6 +68,7 @@ export default function SupportBanner() {
             The Free I Ching stays fully available whether you contribute or not.
           </p>
           <p className="mt-2 text-xs text-ink/55">Renews yearly until canceled. Stripe handles payment and receipts.</p>
+          <SupporterGoal />
         </div>
       </div>
 

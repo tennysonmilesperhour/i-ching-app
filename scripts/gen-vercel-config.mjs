@@ -11,6 +11,7 @@ export function buildVercelConfig() {
   return {
     $schema: 'https://openapi.vercel.sh/vercel.json',
     buildCommand: 'npm run build',
+    installCommand: 'npx --yes npm@12.2.1 ci --ignore-scripts',
     outputDirectory: 'dist',
     trailingSlash: false,
     rewrites: [

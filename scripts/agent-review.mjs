@@ -3,6 +3,7 @@
 // docs/agent-review/YYYY-MM-DD.json. Run by .github/workflows/agent-review.yml.
 import fs from 'node:fs';
 import path from 'node:path';
+import { sanitizeTraffic } from '../src/lib/exportSanitize.js';
 
 const base = (process.env.BASE_URL || 'https://thefreeiching.com').replace(/\/$/, '');
 const dbUrl = (process.env.AGENT_LOG_SUPABASE_URL || '').replace(/\/$/, '');
@@ -99,7 +100,7 @@ if (dbUrl && dbKey) {
   try {
     const summary = await call('agent_hits_summary', { p_days: days });
     const pruned = await call('prune_agent_hits', { p_days: 180 });
-    traffic = { status: 'ok', summary, pruned_rows_older_than_180_days: pruned };
+    traffic = { status: 'ok', summary: sanitizeTraffic(summary), pruned_rows_older_than_180_days: pruned };
   } catch (err) {
     traffic = { status: 'error', error: String(err.message || err) };
     checks.push({ name: 'traffic summary', ok: false, detail: traffic.error });

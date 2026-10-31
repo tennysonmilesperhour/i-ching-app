@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import classicalLines from '../data/classicalLines.json' with { type: 'json' };
 import { classifyAgent } from './agentBots.js';
+import { sanitizeText, sanitizeTraffic } from './exportSanitize.js';
+import { seoForPath } from './seo.js';
 import { buildCatalog, buildDataFiles, buildLlmsFiles } from './agentData.js';
 import { handlePost } from './mcpServer.js';
 import {
@@ -118,4 +120,20 @@ test('bot classifier logs bots and unknown tools but never browsers', () => {
 test('vercel.json is in sync with scripts/gen-vercel-config.mjs', () => {
   const onDisk = JSON.parse(fs.readFileSync(new URL('../../vercel.json', import.meta.url), 'utf8'));
   assert.deepEqual(onDisk, buildVercelConfig());
+});
+
+test('export sanitizer masks token-like and non-text values from callers', () => {
+  assert.equal(sanitizeText('curl/8.4.0 (x86_64)'), 'curl/8.4.0 (x86_64)');
+  assert.equal(sanitizeText('sk_live_abcdefghijklmnop1234'), '[long-token]');
+  assert.ok(!/[<>"'\n]/.test(sanitizeText('<script>"x"\n</script>')));
+  const out = sanitizeTraffic({ unknown_user_agents: [{ user_agent: 'ghp_aaaaaaaaaaaaaaaaaaaaaaaa', hits: 3 }] });
+  assert.equal(out.unknown_user_agents[0].user_agent, '[long-token]');
+  assert.equal(out.unknown_user_agents[0].hits, 3);
+});
+
+test('seoForPath only builds content pages for their own routes', () => {
+  assert.equal(seoForPath('/journal').robots, 'noindex');
+  assert.match(seoForPath('/trigrams/kun').title, /Kun/);
+  assert.match(seoForPath('/methods/three-coin').title, /Three-coin/);
+  assert.equal(seoForPath('/data').robots, 'index, follow');
 });
