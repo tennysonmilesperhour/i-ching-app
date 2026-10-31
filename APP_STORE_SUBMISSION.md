@@ -55,6 +55,8 @@ Text provenance is documented in `THIRD_PARTY_TEXT.md`. The included changing-li
 
 For the native version described above, select **Data Not Collected**. The app does not include advertising, analytics, tracking, account registration, or payment processing. User-created readings and journal text remain on the device.
 
+The website uses PostHog analytics when a key is set, but the native build cannot: `npm run native:build` sets `VITE_NATIVE_BUILD=1`, which swaps `posthog-js` for an empty stub, `scripts/check-native-bundle.mjs` fails the build if PostHog code or a key is still in the bundle, and Capacitor's `capacitor:copy:before` hook runs the same check so a plain `npx cap sync` after a web build is refused. At runtime `src/lib/posthog.js` also stays off whenever Capacitor reports a native platform. `src/lib/analyticsPolicy.test.js` covers all of this.
+
 Recheck this answer before every submission. Adding analytics, crash reporting, advertising, cloud sync, accounts, or payments changes the disclosure.
 
 ## Export compliance

@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import App from '@/App.jsx'
 import '@/index.css'
-import '@/lib/posthog.js'
+import { initAnalytics } from '@/lib/posthog.js'
 
 const rootEl = document.getElementById('root')
 const prerenderPath = document.querySelector('meta[name="prerender-path"]')?.getAttribute('content')
@@ -12,3 +12,5 @@ if (prerenderPath && prerenderPath === window.location.pathname && rootEl.childE
 } else {
   ReactDOM.createRoot(rootEl).render(app)
 }
+
+initAnalytics().catch(() => {})
