@@ -7,7 +7,7 @@ export default defineConfig({
   logLevel: 'error',
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
   plugins: [
