@@ -123,3 +123,35 @@ Follow decisions already recorded in this doc. Do not paywall, charge agents or 
 - Shipped: `/faq`, `/changelog`, `/related-hexagrams`, pinyin in pages, data, llms files and MCP, a share image per hexagram, related hexagrams in the hexagram page HTML. `CONTENT_UPDATED` is 2026-10-31. The next export should show 82 sitemap urls and larger llms and data files; that is expected.
 - Dependencies: React 19.3, Vite 8 with plugin-react 6, sonner 2, eslint-plugin-react-hooks 7 and actions v7 merged after lint, tests, build and a browser check. ESLint 10 waits for eslint-plugin-react to support it.
 - Recommendations for Tennyson: connect the traffic log; read the new Privacy wording; the hexagrams CSV gained a `pinyin` column after `chinese`, which is additive but changes column positions for anyone reading by index.
+
+### 2026-11-02 (weekly review, written up 2026-11-25 from the export)
+- Export `docs/agent-review/2026-11-02.json`: 8 of 8 live checks passed. llms.txt 3,715 bytes. Topic files 1,140 to 22,154 bytes (judgments.txt the largest), all under 60 KB. All nine data files loaded. Sitemap 82 urls. MCP listed all six tools and answered a tool call.
+- Traffic: no traffic data, logging not configured (`traffic.status` is `not_configured`).
+- Change versus 2026-10-26: the 2026-10-31 release is live, as that entry predicted. Sitemap 79 to 82 urls; llms.txt 3,404 to 3,715 bytes; faq.txt 1,458 to 3,575 bytes; hexagrams.txt 7,599 to 8,055; judgments.txt 21,707 to 22,154; trigrams.txt 1,362 to 1,411; hexagrams.json 44,098 to 45,677 and hexagrams.csv 23,209 to 23,535 (the pinyin column); trigrams.json 2,716 to 2,919 and trigrams.csv 811 to 851. Line and cast data files unchanged.
+- Who is cited: not tested, nothing recorded.
+- Fixed or shipped as part of the review: nothing recorded.
+- Recommendation: connect the traffic log; still no citation baseline.
+
+### 2026-11-10 (weekly review, written up 2026-11-25 from the export)
+- Export `docs/agent-review/2026-11-10.json`: 8 of 8 live checks passed, identical to 2026-11-02 apart from the date (llms.txt 3,715 bytes, sitemap 82 urls, six MCP tools).
+- Traffic: no traffic data, logging not configured.
+- Change versus 2026-11-02: none apart from the date.
+- Who is cited: not tested, nothing recorded.
+- Fixed or shipped as part of the review: nothing recorded.
+- Recommendation: same as last week.
+
+### 2026-11-17 (weekly review, written up 2026-11-25 from the export)
+- Export `docs/agent-review/2026-11-17.json`: 8 of 8 live checks passed, identical to 2026-11-02 apart from the date.
+- Traffic: no traffic data, logging not configured.
+- Change versus 2026-11-10: none apart from the date.
+- Who is cited: not tested, nothing recorded.
+- Fixed or shipped as part of the review: nothing recorded.
+- Recommendation: same as last week.
+
+### 2026-11-24 (weekly review, written up 2026-11-25 from the export)
+- Export `docs/agent-review/2026-11-24.json`: 8 of 8 live checks passed, identical to 2026-11-02 apart from the date.
+- Traffic: no traffic data, logging not configured. Seventh weekly export in a row without traffic (`AGENT_LOG_SUPABASE_URL` and `AGENT_LOG_SERVICE_KEY` are unset).
+- Change versus 2026-11-17: none apart from the date.
+- Who is cited: not tested, nothing recorded.
+- Fixed or shipped as part of the review: nothing recorded.
+- Recommendation: these reviews only confirm uptime until the traffic log is connected and the question list (step 2) is run once for a citation baseline.
